@@ -1,0 +1,16 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>All comics</h1>
+    <hr>
+    <div th:each="item : ${comics}">
+        <p>Name: <span th:text="${item.getTitle()}"></span></p>
+        <p>Description: <span th:text="${item.getDescription()}"></span></p>
+        <p>--------</p>
+    </div>
+</body>
+</html>
