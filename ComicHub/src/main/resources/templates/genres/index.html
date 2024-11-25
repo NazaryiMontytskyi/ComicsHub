@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Genres</title>
+</head>
+<body>
+<h2>All genres</h2>
+<hr>
+<div th:if="${genres.isEmpty()}">
+    <p>The collection is empty</p>
+</div>
+<div th:if="${!genres.isEmpty()}">
+    <div th:each="item : ${genres}">
+        <p><span th:text="${item.getName()}"></span> : <span th:text="${item.getDescription()}"></span></p>
+    </div>
+</div>
+</body>
+</html>
