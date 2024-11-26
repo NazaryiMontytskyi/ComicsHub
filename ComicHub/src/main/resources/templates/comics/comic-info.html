@@ -10,6 +10,8 @@
     <p>Author: <span th:text="${comic.getAuthor()}"></span></p>
     <p>Country: <span th:text="${comic.getCountry().getFullName()}"></span></p>
     <p>Genre: <span th:text="${comic.getGenre().getName()}"></span></p>
+    <p>Title image: </p>
+    <img th:src="@{/images/{fileId}(fileId=${comic.titleImage.id})}" alt="error" height="400px">
     <embed th:src="@{/viewPdf/{fileId}(fileId=${comic.pdfFile.id})}" type="application/pdf" width="100%" height="600px">
 </body>
 </html>
