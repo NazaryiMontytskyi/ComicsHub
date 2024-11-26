@@ -1,13 +1,7 @@
 package org.comicshub.comichub.Controllers;
 
-import org.comicshub.comichub.Models.Comic;
-import org.comicshub.comichub.Models.Country;
-import org.comicshub.comichub.Models.Genre;
-import org.comicshub.comichub.Models.PDFFile;
-import org.comicshub.comichub.Services.ComicsService;
-import org.comicshub.comichub.Services.CountriesService;
-import org.comicshub.comichub.Services.GenresService;
-import org.comicshub.comichub.Services.PdfService;
+import org.comicshub.comichub.Models.*;
+import org.comicshub.comichub.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,14 +17,16 @@ public class ComicsController {
     GenresService genresService;
     CountriesService countriesService;
     PdfService pdfService;
+    ImageService imageService;
 
     @Autowired
     public ComicsController(ComicsService comicsService, GenresService genresService, CountriesService countriesService,
-                            PdfService pdfService) {
+                            PdfService pdfService, ImageService imageService) {
         this.comicsService = comicsService;
         this.genresService = genresService;
         this.countriesService = countriesService;
         this.pdfService = pdfService;
+        this.imageService = imageService;
     }
 
     @GetMapping("/comics/index")
@@ -54,22 +50,20 @@ public class ComicsController {
             @RequestParam("genre") long genreId,
             @RequestParam("author") String author,
             @RequestParam("country") long countryId,
-            @RequestParam("pdf-file") MultipartFile pdfFile
+            @RequestParam("pdf-file") MultipartFile pdfFile,
+            @RequestParam("title-image") MultipartFile titleImage
     ) throws IOException
     {
-        System.out.println(title);
-        System.out.println(desc);
-        System.out.println(genreId);
-        System.out.println(author);
-        System.out.println(countryId);
-        System.out.println(pdfFile.getOriginalFilename());
 
         Genre targetGenre = this.genresService.findById(genreId);
         Country targetCountry = this.countriesService.findById(countryId);
         PDFFile targetFile = new PDFFile();
         targetFile.fromMultipartFile(pdfFile);
+        ImageContent imageContent = new ImageContent();
+        imageContent.fromMultipartFile(titleImage);
 
         this.pdfService.save(targetFile);
+        this.imageService.save(imageContent);
 
         Comic comic = new Comic();
         comic.setTitle(title);
@@ -78,6 +72,7 @@ public class ComicsController {
         comic.setAuthor(author);
         comic.setCountry(targetCountry);
         comic.setPdfFile(targetFile);
+        comic.setTitleImage(imageContent);
         this.comicsService.save(comic);
         return "redirect:/comics/index";
     }

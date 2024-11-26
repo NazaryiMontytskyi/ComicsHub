@@ -39,6 +39,10 @@ public class Comic {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pdf_file_id", referencedColumnName = "id")
     private PDFFile pdfFile;
-    //TODO: country, author, genre, pdffile
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_file_id", referencedColumnName = "id")
+    private ImageContent titleImage;
+
 
 }
