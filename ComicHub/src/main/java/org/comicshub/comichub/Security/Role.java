@@ -1,7 +1,13 @@
 package org.comicshub.comichub.Security;
 
-public enum Role {
+import org.springframework.security.core.GrantedAuthority;
 
-    ROLE_GUEST, ROLE_USER, ROLE_ADMIN
+public enum Role implements GrantedAuthority {
 
+    ROLE_GUEST, ROLE_USER, ROLE_ADMIN;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }
