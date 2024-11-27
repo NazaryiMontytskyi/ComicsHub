@@ -10,6 +10,7 @@
     <div th:each="item : ${comics}">
         <p>Name: <span th:text="${item.getTitle()}"></span></p>
         <p>Description: <span th:text="${item.getDescription()}"></span></p>
+        <p>Owner: <span th:text="${item.user.username}"></span></p>
         <p>--------</p>
     </div>
 </body>

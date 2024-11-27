@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 
 @Controller
 public class ComicsController {
@@ -36,9 +37,10 @@ public class ComicsController {
     }
 
     @GetMapping("/comics/new")
-    public String createComic(Model model){
+    public String createComic(Model model, Principal principal){
         model.addAttribute("genres", this.genresService.findAll());
         model.addAttribute("countries", this.countriesService.findAll());
+        model.addAttribute("username", principal.getName());
         return "comics/new";
     }
 
@@ -51,7 +53,8 @@ public class ComicsController {
             @RequestParam("author") String author,
             @RequestParam("country") long countryId,
             @RequestParam("pdf-file") MultipartFile pdfFile,
-            @RequestParam("title-image") MultipartFile titleImage
+            @RequestParam("title-image") MultipartFile titleImage,
+            Principal principal
     ) throws IOException
     {
 
@@ -73,7 +76,7 @@ public class ComicsController {
         comic.setCountry(targetCountry);
         comic.setPdfFile(targetFile);
         comic.setTitleImage(imageContent);
-        this.comicsService.save(comic);
+        this.comicsService.save(principal,comic);
         return "redirect:/comics/index";
     }
 

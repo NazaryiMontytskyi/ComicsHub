@@ -33,6 +33,7 @@
     <label for="pdf-file">Select a file: </label>
     <input type="file" name = "pdf-file" id="pdf-file">
     <br>
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
     <input type="submit" value="Create">
 </form>
 </body>
