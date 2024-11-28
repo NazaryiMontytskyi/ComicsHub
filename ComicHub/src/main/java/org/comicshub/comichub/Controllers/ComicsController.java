@@ -19,15 +19,18 @@ public class ComicsController {
     CountriesService countriesService;
     PdfService pdfService;
     ImageService imageService;
+    ComicCommentsService comicCommentsService;
 
     @Autowired
     public ComicsController(ComicsService comicsService, GenresService genresService, CountriesService countriesService,
-                            PdfService pdfService, ImageService imageService) {
+                            PdfService pdfService, ImageService imageService,
+                            ComicCommentsService comicCommentsService) {
         this.comicsService = comicsService;
         this.genresService = genresService;
         this.countriesService = countriesService;
         this.pdfService = pdfService;
         this.imageService = imageService;
+        this.comicCommentsService = comicCommentsService;
     }
 
     @GetMapping("/comics/index")
@@ -83,6 +86,7 @@ public class ComicsController {
     @GetMapping("/comics/{id}")
     public String infoComic(Model model, @PathVariable long id){
         model.addAttribute("comic", this.comicsService.findById(id));
+        model.addAttribute("comments", this.comicCommentsService.findByComicId(id));
         return "comics/comic-info";
     }
 
