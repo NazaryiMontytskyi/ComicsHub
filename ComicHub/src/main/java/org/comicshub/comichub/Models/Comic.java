@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
+import org.comicshub.comichub.Security.User;
 
 @Data
 @NoArgsConstructor
@@ -43,6 +44,10 @@ public class Comic {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_file_id", referencedColumnName = "id")
     private ImageContent titleImage;
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn
+    private User user;
 
 
 }

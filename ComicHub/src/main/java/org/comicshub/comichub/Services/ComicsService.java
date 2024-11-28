@@ -3,8 +3,10 @@ package org.comicshub.comichub.Services;
 
 import org.comicshub.comichub.Models.Comic;
 import org.comicshub.comichub.Repositories.ComicsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,16 +14,20 @@ import java.util.List;
 public class ComicsService {
 
     ComicsRepository comicsRepository;
+    UserService userService;
 
-    public ComicsService(ComicsRepository comicsRepository) {
+    @Autowired
+    public ComicsService(ComicsRepository comicsRepository, UserService userService) {
         this.comicsRepository = comicsRepository;
+        this.userService = userService;
     }
 
     public List<Comic> index(){
         return this.comicsRepository.findAll();
     }
 
-    public void save(final Comic comic){
+    public void save(Principal principal, Comic comic){
+        comic.setUser(this.userService.getUserByPrincipal(principal));
         this.comicsRepository.save(comic);
     }
 

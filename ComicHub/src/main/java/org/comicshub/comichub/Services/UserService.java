@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
+
 @Service
 @Slf4j
 public class UserService {
@@ -31,6 +33,13 @@ public class UserService {
         user.getRoles().add(Role.ROLE_USER);
         this.userRepository.save(user);
         return true;
+    }
+
+    public User getUserByPrincipal(Principal principal) {
+        if(principal == null) {
+            return new User();
+        }
+        return this.userRepository.findByUsername(principal.getName());
     }
 
 }
