@@ -33,6 +33,7 @@ public class SecurityConfig{
                         authorize ->
                                 authorize.requestMatchers("/registration", "/comics/index").permitAll()
                                         .requestMatchers("/viewPdf/**").permitAll()
+                                        .requestMatchers("/my_account").hasRole("USER")
                                         .anyRequest().authenticated()
                 )
                 .formLogin(

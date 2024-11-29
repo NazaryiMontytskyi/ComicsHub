@@ -1,5 +1,6 @@
 package org.comicshub.comichub.Repositories;
 
+import jakarta.transaction.Transactional;
 import org.comicshub.comichub.Models.Comic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,5 @@ public interface ComicsRepository extends JpaRepository<Comic, Long> {
 
     Comic findById(long id);
 
+    List<Comic> findByUserId(long id);
 }

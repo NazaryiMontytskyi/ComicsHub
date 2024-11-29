@@ -1,5 +1,6 @@
 package org.comicshub.comichub.Services;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.comicshub.comichub.Models.ImageContent;
 import org.comicshub.comichub.Repositories.ImageRepository;
@@ -19,10 +20,12 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
+    @Transactional
     public List<ImageContent> findAll(){
         return imageRepository.findAll();
     }
 
+    @Transactional
     public ImageContent findById(long id){
         return imageRepository.findById(id);
     }

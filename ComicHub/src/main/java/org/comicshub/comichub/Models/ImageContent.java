@@ -1,11 +1,13 @@
 package org.comicshub.comichub.Models;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
+import org.hibernate.annotations.Type;
 
 import java.io.IOException;
 
