@@ -24,6 +24,10 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public User findById(long id){
+        return this.userRepository.findById(id);
+    }
+
     public boolean createUser(User user) {
         if(this.userRepository.findByUsername(user.getUsername()) != null) {
             return false;
@@ -40,6 +44,10 @@ public class UserService {
             return new User();
         }
         return this.userRepository.findByUsername(principal.getName());
+    }
+
+    public User updateUser(User user){
+        return this.userRepository.save(user);
     }
 
 }
