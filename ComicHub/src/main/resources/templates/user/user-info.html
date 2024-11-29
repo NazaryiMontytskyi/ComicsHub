@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:value="${user.username}"></title>
+</head>
+<body>
+<h2>My account</h2>
+<hr>
+<p><b>Username: </b><span th:text="${user.username}"></span></p>
+<form th:action="@{/username}" method="POST">
+    <input type="hidden" name="_method" value="patch">
+    <label for="username">New username</label>
+    <input type="text" name="username" id = "username">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <input type="hidden" name="user_id" th:value="${user.getId()}">
+    <input type="submit" value="Change username">
+</form>
+<p><b>Email: </b><span th:text="${user.email}"></span></p>
+<p><b>TODO: image of account</b></p>
+<div th:if="${comics.isEmpty()}">
+  <p color="red">User hasn't any comics!</p>
+</div>
+<div th:if="${!comics.isEmpty()}">
+  <h3>User comics</h3>
+  <div th:each="comic : ${comics}">
+    <p><span th:text="${comic.getTitle()}"></span></p>
+    <p><span th:description="${comic.getDescription()}"></span></p>
+    <img th:src="@{/images/{fileId}(fileId=${comic.titleImage.id})}" alt="" height="150px">
+    <br>
+  </div>
+</div>
+</body>
+</html>
