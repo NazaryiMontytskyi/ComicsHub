@@ -43,7 +43,7 @@ public class UsersController {
     }
 
     @PostMapping("/registration")
-    public String createUser(User user){
+    public String createUser(User user) throws IOException {
         this.userService.createUser(user);
         return "redirect:/login";
     }
