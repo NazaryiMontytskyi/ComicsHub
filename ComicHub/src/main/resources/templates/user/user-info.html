@@ -17,7 +17,41 @@
     <input type="submit" value="Change username">
 </form>
 <p><b>Email: </b><span th:text="${user.email}"></span></p>
-<p><b>TODO: image of account</b></p>
+<form th:action="@{/email}" method="POST">
+    <input type="hidden" name="_method" value="patch">
+    <label for="email">New email: </label>
+    <input type="email" name = "email" id="email">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <input type="hidden" name="user_id" th:value="${user.getId()}">
+    <input type="submit" value="Change email">
+</form>
+<p>Avatar:</p>
+<div th:if="${user.getAvatar()!=null}">
+    <img th:src="@{/images/{file_id}(file_id=${user.getAvatar().getId()})}" alt="No avatar" height="150px">
+</div>
+<div th:if="${!(user.getAvatar()!=null)}">
+    <p>No such avatar</p>
+</div>
+<form th:action="@{/avatar}" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="_method" value="patch">
+    <label for="avatar">Load new image for avatar: </label>
+    <input type="file" name="avatar" id="avatar">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <input type="hidden" name="user_id" th:value="${user.getId()}">
+    <input type="submit" value="Change avatar">
+</form>
+<form th:action="@{/password}" method="POST">
+    <input type="hidden" name="_method" value="patch">
+    <label for="curr_pass">Current password:</label>
+    <input type="password" name="current_password" id="curr_pass">
+    <label for="new_pass">New password: </label>
+    <input type="password" name="new_password" id="new_pass">
+    <label for="conf_pass">Confirm new password</label>
+    <input type="password" name="confirm_password" id = "conf_pass">
+    <input type="hidden" name="user_id" th:value="${user.id}">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <input type="submit" value="Change password">
+</form>
 <div th:if="${comics.isEmpty()}">
   <p color="red">User hasn't any comics!</p>
 </div>

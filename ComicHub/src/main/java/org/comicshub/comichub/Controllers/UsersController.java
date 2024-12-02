@@ -94,13 +94,17 @@ public class UsersController {
     @PatchMapping("/password")
     public String updatePassword(@RequestParam("new_password") String newPassword,
                                  @RequestParam("current_password") String currentPassword,
+                                 @RequestParam("confirm_password") String confirmPassword,
                                  @RequestParam("user_id") long userId) {
 
         User userToUpdate = this.userService.findById(userId);
-        if(this.userService.isPasswordsEqual(this.passwordEncoder.encode(currentPassword), userToUpdate.getPassword())){
-            newPassword = passwordEncoder.encode(newPassword);
-            userToUpdate.setPassword(newPassword);
-            return "redirect:/login";
+        if(this.passwordEncoder.matches(currentPassword, userToUpdate.getPassword())){
+            if(newPassword.equals(confirmPassword)){
+                newPassword = passwordEncoder.encode(newPassword);
+                userToUpdate.setPassword(newPassword);
+                this.userService.updateUser(userToUpdate);
+                return "redirect:/login";
+            }
         }
 
 
