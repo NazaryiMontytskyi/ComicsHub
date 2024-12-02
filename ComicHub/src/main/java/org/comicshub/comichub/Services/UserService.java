@@ -39,6 +39,10 @@ public class UserService {
         return true;
     }
 
+    public boolean isPasswordsEqual(String first, String second){
+        return this.passwordEncoder.matches(first, second);
+    }
+
     public User getUserByPrincipal(Principal principal) {
         if(principal == null) {
             return new User();
