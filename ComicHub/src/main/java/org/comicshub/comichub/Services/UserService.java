@@ -50,6 +50,7 @@ public class UserService {
         return this.userRepository.findByUsername(principal.getName());
     }
 
+
     public User updateUser(User user){
         return this.userRepository.save(user);
     }

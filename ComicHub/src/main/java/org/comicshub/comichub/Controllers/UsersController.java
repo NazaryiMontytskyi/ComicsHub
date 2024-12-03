@@ -1,8 +1,10 @@
 package org.comicshub.comichub.Controllers;
 
+import org.comicshub.comichub.Models.Comic;
 import org.comicshub.comichub.Models.ImageContent;
 import org.comicshub.comichub.Security.User;
 import org.comicshub.comichub.Services.ComicsService;
+import org.comicshub.comichub.Services.UserReadService;
 import org.comicshub.comichub.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class UsersController {
@@ -25,7 +28,8 @@ public class UsersController {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsersController(UserService userService, ComicsService comicsService, PasswordEncoder passwordEncoder) {
+    public UsersController(UserService userService, ComicsService comicsService,
+                           PasswordEncoder passwordEncoder) {
 
         this.userService = userService;
         this.comicsService = comicsService;
@@ -107,8 +111,15 @@ public class UsersController {
             }
         }
 
-
         return "redirect:/my_account";
+    }
+
+    @GetMapping("/favourites")
+    public String favouriteComics(Model model, Principal principal){
+        User userToRead = this.userService.getUserByPrincipal(principal);
+        List<Comic> usersComics = this.comicsService.findUserFavourites(userToRead.getId());
+        model.addAttribute("users_comics", usersComics);
+        return "user/user-favourite";
     }
 
 }

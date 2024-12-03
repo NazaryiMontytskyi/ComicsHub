@@ -2,7 +2,9 @@ package org.comicshub.comichub.Services;
 
 
 import org.comicshub.comichub.Models.Comic;
+import org.comicshub.comichub.Models.UserRead;
 import org.comicshub.comichub.Repositories.ComicsRepository;
+import org.comicshub.comichub.Security.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +18,13 @@ public class ComicsService {
 
     ComicsRepository comicsRepository;
     UserService userService;
+    UserReadService userReadService;
 
     @Autowired
-    public ComicsService(ComicsRepository comicsRepository, UserService userService) {
+    public ComicsService(ComicsRepository comicsRepository, UserService userService, UserReadService userReadService) {
         this.comicsRepository = comicsRepository;
         this.userService = userService;
+        this.userReadService = userReadService;
     }
 
     @Transactional
@@ -41,6 +45,17 @@ public class ComicsService {
     @Transactional
     public Comic findById(final long id){
         return this.comicsRepository.findById(id);
+    }
+
+    @Transactional
+    public List<Comic> findUserFavourites(long userId){
+        User targetUser = this.userService.findById(userId);
+        List<Comic> favourites = new ArrayList<>();
+        List<UserRead> userComic = this.userReadService.findAllByUser(targetUser);
+        for (UserRead userRead : userComic) {
+            favourites.add(this.comicsRepository.findById(userRead.getComic().getId()));
+        }
+        return favourites;
     }
 
 
