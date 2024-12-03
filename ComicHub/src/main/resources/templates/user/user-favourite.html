@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Favourite</title>
+</head>
+<body>
+    <h3>Your favourite comics</h3>
+    <hr>
+    <div th:each="comic : ${users_comics}">
+        <p>Name: <span th:text="${comic.title}"></span></p>
+        <p>Author: <span th:text="${comic.author}"></span></p>
+        <p>Country: <span th:text="${comic.country.getFullName()}"></span></p>
+        <form th:action="@{/userread/remove}" method="POST">
+            <input type="hidden" name="_method" value="delete">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+            <input type="hidden" name="comicId" th:value="${comic.id}">
+            <input type="submit" value="Delete from list">
+        </form>
+        <p>---------------------------</p>
+    </div>
+</body>
+</html>
