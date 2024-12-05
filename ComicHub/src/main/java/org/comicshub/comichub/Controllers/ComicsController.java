@@ -3,6 +3,9 @@ package org.comicshub.comichub.Controllers;
 import org.comicshub.comichub.Models.*;
 import org.comicshub.comichub.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +37,29 @@ public class ComicsController {
     }
 
     @GetMapping("/comics/index")
-    public String index(Model model){
-        model.addAttribute("comics", this.comicsService.index());
+    public String index(@RequestParam(value = "genreId", required = false, defaultValue = "0") long genreId,
+                        @RequestParam(value = "countryId", required = false, defaultValue = "0") long countryId,
+                        @RequestParam(value = "searchString", required = false, defaultValue = "") String searchQuery,
+                        @PageableDefault(size = 6) Pageable pageable,
+                        Model model){
+        Genre genre = null;
+        Country country = null;
+        if(genreId != 0){
+            genre = this.genresService.findById(genreId);
+        }
+        if(countryId != 0){
+            country = this.countriesService.findById(countryId);
+        }
+
+        Page<Comic> content = this.comicsService.getFilteredComics(genre, country, pageable);
+        if(!searchQuery.isEmpty()){
+            content = this.comicsService.getApproximateSearchComic(searchQuery, pageable);
+        }
+        model.addAttribute("all_genres", this.genresService.findAll());
+        model.addAttribute("all_countries", this.countriesService.findAll());
+        model.addAttribute("genre", genre);
+        model.addAttribute("country", country);
+        model.addAttribute("comics", content);
         return "comics/index";
     }
 

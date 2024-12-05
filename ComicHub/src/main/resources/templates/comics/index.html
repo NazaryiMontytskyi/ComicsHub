@@ -7,7 +7,35 @@
 <body>
     <h1>All comics</h1>
     <hr>
-    <div th:each="item : ${comics}">
+    <form th:action="@{/comics/index}" method="GET">
+        <label for="search_line">Search: </label>
+        <input type="text" id="search_line" name="searchString">
+        <button type="submit">Find</button>
+    </form>
+    <form th:action="@{/comics/index}" method="GET">
+        <label for="genre">Genre: </label>
+        <select name="genreId" id="genre">
+            <option th:selected = "${genre == null}" value="">All genres</option>
+            <option th:each="g : ${all_genres}"
+                    th:value="${g.id}"
+                    th:text="${g.getName()}"
+            th:selected="${genre == g}">
+            </option>
+        </select>
+
+        <label for="country">Country:</label>
+        <select name="countryId" id="country">
+            <option th:selected = "${country == null}" value="">All countries</option>
+            <option th:each="c : ${all_countries}"
+                    th:value="${c.id}"
+                    th:text="${c.getFullName()}"
+                    th:selected="${country==c}">
+            </option>
+        </select>
+
+        <button type="submit">Filter</button>
+    </form>
+    <div th:each="item : ${comics.content}">
         <p>Name: <span th:text="${item.getTitle()}"></span></p>
         <p>Description: <span th:text="${item.getDescription()}"></span></p>
         <p>Owner: <span th:text="${item.user.username}"></span></p>
