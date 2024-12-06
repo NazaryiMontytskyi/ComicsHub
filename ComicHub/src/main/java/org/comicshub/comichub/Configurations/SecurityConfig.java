@@ -31,11 +31,10 @@ public class SecurityConfig{
                 )
                 .authorizeHttpRequests(
                         authorize ->
-                                authorize.requestMatchers("/registration", "/comics/index").permitAll()
+                                authorize.requestMatchers("/registration").permitAll()
+                                        .requestMatchers("/comics/index").permitAll()
                                         .requestMatchers("/viewPdf/**").permitAll()
                                         .requestMatchers("/my_account").hasRole("USER")
-                                        .requestMatchers("/userread/**").hasRole("USER")
-                                        .requestMatchers("/favourites").hasRole("USER")
                                         .anyRequest().authenticated()
                 )
                 .formLogin(
