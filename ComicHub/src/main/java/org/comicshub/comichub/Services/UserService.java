@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -53,6 +54,18 @@ public class UserService {
 
     public User updateUser(User user){
         return this.userRepository.save(user);
+    }
+
+    public List<User> findAllUsers() {
+        return this.userRepository.findAllByRole(Role.ROLE_USER);
+    }
+
+    public User deleteUser(long id){
+        return this.userRepository.deleteById(id);
+    }
+
+    public boolean userExistsByUsername(String username){
+        return this.userRepository.existsByUsername(username);
     }
 
 }

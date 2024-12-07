@@ -34,7 +34,8 @@ public class SecurityConfig{
                                 authorize.requestMatchers("/registration").permitAll()
                                         .requestMatchers("/comics/index").permitAll()
                                         .requestMatchers("/viewPdf/**").permitAll()
-                                        .requestMatchers("/my_account").hasRole("USER")
+                                        .requestMatchers("/my_account").hasAnyRole("USER", "ADMIN")
+                                        .requestMatchers("/admin/**").hasRole("ADMIN")
                                         .anyRequest().authenticated()
                 )
                 .formLogin(

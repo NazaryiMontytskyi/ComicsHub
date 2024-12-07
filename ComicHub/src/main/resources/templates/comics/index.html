@@ -39,6 +39,11 @@
     <p>Name: <span th:text="${item.getTitle()}"></span></p>
     <p>Description: <span th:text="${item.getDescription()}"></span></p>
     <p>Owner: <span th:text="${item.user.username}"></span></p>
+    <form th:action="@{/userread/add}" method="POST">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <input type="hidden" name="comicId" th:value="${item.id}">
+        <button type="submit">Add to favourites</button>
+    </form>
     <p>--------</p>
 </div>
 </body>
