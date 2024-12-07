@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin panel</title>
+</head>
+<body>
+    <h1>Admin panel</h1>
+    <hr>
+    <details>
+        <summary>User of system</summary>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Active</th>
+                    <th>Activate/Deactivate</th>
+                    <th>Delete account</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.id}"></td>
+                    <td th:text="${user.username}"></td>
+                    <td th:text="${user.email}"></td>
+                    <div th:if="${user.active}">
+                        <td>Active</td>
+                        <td><form th:action="@{/admin/deactivate}" method="POST">
+                            <input type="hidden" name="user_id" th:value="${user.id}">
+                            <input type="hidden" name="_method" value="patch">
+                            <button type="submit">Deactivate</button>
+                        </form></td>
+                    </div>
+                    <div th:if="${!user.active}">
+                        <td>Not active</td>
+                        <td>
+                            <form th:action="@{/admin/activate}"  method="POST">
+                                <input type="hidden" name="user_id" th:value="${user.id}">
+                                <input type="hidden" name="_method" value="patch">
+                                <button type="submit">Activate</button>
+                            </form>
+                        </td>
+                    </div>
+                    <td>
+                        <form th:action="@{/admin/delete}" method="POST">
+                            <input type="hidden" name="_method" value="delete">
+                            <input type="hidden" name="user_id" th:value="${user.id}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </details>
+</body>
+</html>
