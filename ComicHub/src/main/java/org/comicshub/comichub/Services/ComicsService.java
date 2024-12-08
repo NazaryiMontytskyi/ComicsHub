@@ -84,6 +84,10 @@ public class ComicsService {
         return this.comicsRepository.findByTitleContainingIgnoreCase(searchQuery, pageable);
     }
 
+    public Comic deleteComic(long id){
+        return this.comicsRepository.deleteById(id);
+    }
+
 
 
 }

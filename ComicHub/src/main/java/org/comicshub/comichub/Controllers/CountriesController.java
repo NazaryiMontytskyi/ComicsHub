@@ -5,10 +5,7 @@ import org.comicshub.comichub.Services.CountriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/countries")
@@ -43,7 +40,13 @@ public class CountriesController {
         newCountry.setShortName(shortName);
         newCountry.setFullName(fullName);
         this.countriesService.save(newCountry);
-        return "redirect:/countries/index";
+        return "redirect:/admin/index";
+    }
+
+    @DeleteMapping("/delete")
+    public String deleteCountry(@RequestParam("country_id") long countryId){
+        this.countriesService.deleteById(countryId);
+        return "redirect:/admin/index";
     }
 
 }

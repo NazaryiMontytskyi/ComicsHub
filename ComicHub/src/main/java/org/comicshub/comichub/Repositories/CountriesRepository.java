@@ -16,4 +16,6 @@ public interface CountriesRepository extends JpaRepository<Country, Long> {
 
     Country findById(long id);
 
+    Country deleteById(long id);
+
 }

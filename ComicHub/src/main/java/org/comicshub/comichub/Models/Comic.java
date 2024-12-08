@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 import org.comicshub.comichub.Security.User;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -48,6 +50,9 @@ public class Comic {
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn
     private User user;
+
+    @OneToMany(mappedBy = "comic", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<ComicComment> comments;
 
 
 }

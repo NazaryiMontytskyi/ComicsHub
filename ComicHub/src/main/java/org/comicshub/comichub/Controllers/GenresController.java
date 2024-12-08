@@ -6,10 +6,7 @@ import org.comicshub.comichub.Services.GenresService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/genres")
@@ -43,6 +40,14 @@ public class GenresController {
         newGenre.setName(name);
         newGenre.setDescription(description);
         genresService.save(newGenre);
-        return "redirect:/genres/index";
+        return "redirect:/admin/index";
     }
+
+    @DeleteMapping("/delete")
+    public String deleteGenre(@RequestParam("genre_id") long genreId){
+        this.genresService.deleteById(genreId);
+        return "redirect:/admin/index";
+    }
+
+
 }

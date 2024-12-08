@@ -34,4 +34,8 @@ public class CountriesService {
         return this.countriesRepository.findById(id);
     }
 
+    public Country deleteById(long id){
+        return this.countriesRepository.deleteById(id);
+    }
+
 }
