@@ -2,49 +2,112 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Main page</title>
+    <link rel="stylesheet" href="/styles/styles.css">
 </head>
 <body>
-<h1>All comics</h1>
-<hr>
-<form th:action="@{/comics/index}" method="GET">
-    <label for="search_line">Search: </label>
-    <input type="text" id="search_line" name="searchString">
-    <button type="submit">Find</button>
-</form>
-<form th:action="@{/comics/index}" method="GET">
-    <label for="genre">Genre: </label>
-    <select name="genreId" id="genre">
-        <option th:selected = "${genre == null}" value="">All genres</option>
-        <option th:each="g : ${all_genres}"
-                th:value="${g.id}"
-                th:text="${g.getName()}"
-                th:selected="${genre == g}">
-        </option>
-    </select>
+<header>
+    <div class="header-container">
+        <!-- Логотип -->
+        <div class="header-logo">
+            <a th:href="@{/comics/index}" class="logo-link">ComicHub</a>
+        </div>
 
-    <label for="country">Country:</label>
-    <select name="countryId" id="country">
-        <option th:selected = "${country == null}" value="">All countries</option>
-        <option th:each="c : ${all_countries}"
-                th:value="${c.id}"
-                th:text="${c.getFullName()}"
-                th:selected="${country==c}">
-        </option>
-    </select>
+        <!-- Посилання на інші сторінки -->
+        <nav class="header-navigation">
+            <a th:href="@{/comics/index}" class="nav-link">Comics</a>
+            <a href="/about" class="nav-link">About</a>
+            <a href="/contact" class="nav-link">Contact</a>
+        </nav>
 
-    <button type="submit">Filter</button>
-</form>
-<div th:each="item : ${comics.content}">
-    <p>Name: <span th:text="${item.getTitle()}"></span></p>
-    <p>Description: <span th:text="${item.getDescription()}"></span></p>
-    <p>Owner: <span th:text="${item.user.username}"></span></p>
-    <form th:action="@{/userread/add}" method="POST">
-        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-        <input type="hidden" name="comicId" th:value="${item.id}">
-        <button type="submit">Add to favourites</button>
-    </form>
-    <p>--------</p>
+        <!-- Інформація про користувача -->
+        <div class="header-user">
+            <span th:if="${user == null}">
+                <a href="/login" class="login-link">Login</a>
+            </span>
+            <span th:if="${user != null}">
+                <a th:href="@{/my_account}" class="user-link" th:text="${user.username}"></a>
+            </span>
+        </div>
+    </div>
+</header>
+
+<div class="content-container">
+    <div class="filters-container">
+        <form class="search-form" th:action="@{/comics/index}" method="GET">
+            <label for="search_line">Search: </label>
+            <input class="search-input" type="text" id="search_line" name="searchString">
+            <button class="search-button" type="submit">Find</button>
+        </form>
+        <form class="filter-form" th:action="@{/comics/index}" method="GET">
+            <label for="genre">Genre: </label>
+            <select class="filter-select" name="genreId" id="genre">
+                <option th:selected="${genre == null}" value="">All genres</option>
+                <option th:each="g : ${all_genres}"
+                        th:value="${g.id}"
+                        th:text="${g.getName()}"
+                        th:selected="${genre == g}">
+                </option>
+            </select>
+            <label for="country">Country:</label>
+            <select class="filter-select" name="countryId" id="country">
+                <option th:selected="${country == null}" value="">All countries</option>
+                <option th:each="c : ${all_countries}"
+                        th:value="${c.id}"
+                        th:text="${c.getFullName()}"
+                        th:selected="${country == c}">
+                </option>
+            </select>
+            <button class="filter-button" type="submit">Filter</button>
+        </form>
+    </div>
+    <div class="comics-container">
+        <div class="comic" th:each="item : ${comics.content}">
+            <div class="comic-content-container">
+                <div class="image-container">
+                    <img class="comic-image"
+                         th:src="@{/images/{fileId}(fileId=${item.titleImage.id})}"
+                         alt="image">
+                </div>
+                <div class="credentials-container">
+                    <div class="comic-name-container">
+                        <p th:text="${item.title}"></p>
+                    </div>
+                    <div class="comic-genre-container">
+                        <p th:text="${item.genre.name}"></p>
+                    </div>
+                    <div class="comic-buttons-container">
+                        <form th:action="@{/comics/{id}(id=${item.id})}" method="GET">
+                            <button type="submit">Open info</button>
+                        </form>
+                        <form th:action="@{/userread/add}" method="POST">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                            <button type="submit">Add to favourites</button>
+                        </form>
+                    </div>
+                    <div>
+                        <p th:text="${item.author}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Пагінація -->
+    <div class="pagination-container">
+        <a class="pagination-button"
+           th:if="${comics.hasPrevious()}"
+           th:href="@{/comics/index(page=${comics.number - 1}, size=${comics.size})}">
+            &lt;
+        </a>
+        <span class="pagination-info">
+            Page <span th:text="${comics.number + 1}"></span> of <span th:text="${comics.totalPages}"></span>
+        </span>
+        <a class="pagination-button"
+           th:if="${comics.hasNext()}"
+           th:href="@{/comics/index(page=${comics.number + 1}, size=${comics.size})}">
+            &gt;
+        </a>
+    </div>
 </div>
 </body>
 </html>

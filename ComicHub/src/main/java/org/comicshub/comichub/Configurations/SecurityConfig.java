@@ -31,7 +31,10 @@ public class SecurityConfig{
                 )
                 .authorizeHttpRequests(
                         authorize ->
-                                authorize.requestMatchers("/registration").permitAll()
+                                authorize
+                                        .requestMatchers("/styles/**").permitAll()
+                                        .requestMatchers("/images/**").permitAll()
+                                        .requestMatchers("/registration").permitAll()
                                         .requestMatchers("/comics/index").permitAll()
                                         .requestMatchers("/viewPdf/**").permitAll()
                                         .requestMatchers("/my_account").hasAnyRole("USER", "ADMIN")
