@@ -2,6 +2,9 @@ package org.comicshub.comichub.Controllers;
 
 import org.comicshub.comichub.Security.Role;
 import org.comicshub.comichub.Security.User;
+import org.comicshub.comichub.Services.ComicsService;
+import org.comicshub.comichub.Services.CountriesService;
+import org.comicshub.comichub.Services.GenresService;
 import org.comicshub.comichub.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +19,18 @@ import java.util.Set;
 public class AdminController {
 
     UserService userService;
+    ComicsService comicsService;
+    GenresService genresService;
+    CountriesService countriesService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, ComicsService comicsService,
+                           GenresService genresService, CountriesService countriesService) {
         this.userService = userService;
+        this.comicsService = comicsService;
+        this.genresService = genresService;
+        this.countriesService = countriesService;
+
         if(!this.userService.userExistsByUsername("admin")){
             this.createBasicAdmin();
         }
@@ -28,6 +39,9 @@ public class AdminController {
     @GetMapping("/index")
     public String index(Model model) {
         model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute("comics", comicsService.index());
+        model.addAttribute("genres", genresService.findAll());
+        model.addAttribute("countries", countriesService.findAll());
         return "admin/index";
     }
 
@@ -50,6 +64,12 @@ public class AdminController {
     @DeleteMapping("/delete")
     public String deleteUser(@RequestParam("user_id") long userId){
         this.userService.deleteUser(userId);
+        return "redirect:/admin/index";
+    }
+
+    @DeleteMapping("/delete_comic")
+    public String deleteComic(@RequestParam("comic_id") long comicId){
+        this.comicsService.deleteComic(comicId);
         return "redirect:/admin/index";
     }
 

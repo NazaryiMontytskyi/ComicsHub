@@ -19,7 +19,7 @@ public interface GenresRepository extends JpaRepository<Genre, Long> {
 
     Genre save(Genre genre);
 
-    Genre removeById(Long id);
+    Genre deleteById(long id);
 
     Genre findById(long id);
 

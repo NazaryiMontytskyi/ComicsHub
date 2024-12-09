@@ -29,4 +29,6 @@ public interface ComicsRepository extends JpaRepository<Comic, Long> {
     Page<Comic> findByCountry(Country country, Pageable pageable);
 
     Page<Comic> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+
+    Comic deleteById(long id);
 }

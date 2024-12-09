@@ -54,5 +54,115 @@
             </tbody>
         </table>
     </details>
+    <details>
+        <summary>Comics in system</summary>
+        <table>
+            <thead>
+                <tr>
+                    <td>#</td>
+                    <td>Name</td>
+                    <td>Description</td>
+                    <td>Author</td>
+                    <td>Genre</td>
+                    <td>Country</td>
+                    <td>Delete comic</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${comics}">
+                    <td th:text="${item.id}"></td>
+                    <td th:text="${item.title}"></td>
+                    <td th:text="${item.description}"></td>
+                    <td th:text="${item.author}"></td>
+                    <td th:text="${item.genre.name}"></td>
+                    <td th:text="${item.country.shortName}"></td>
+                    <td>
+                        <form th:action="@{/admin/delete_comic}" method="POST">
+                            <input type="hidden" name="_method" value="delete">
+                            <input type="hidden" name="comic_id" th:value="${item.id}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </details>
+
+    <form th:action="@{/genres/new}" method="POST">
+        <label for="name">Name of genre: </label>
+        <input type="text" name="name" id="name">
+        <br>
+        <label for="description">Description of genre</label>
+        <input type="text" name="description" id="description">
+        <br>
+        <button type="submit">Create genre</button>
+    </form>
+
+    <details>
+        <summary>Genres</summary>
+        <table>
+            <thead>
+            <tr>
+                <td>#</td>
+                <td>Genre</td>
+                <td>Description</td>
+                <td>Delete</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="genre : ${genres}">
+                <td th:text="${genre.id}"></td>
+                <td th:text="${genre.name}"></td>
+                <td th:text="${genre.description}"></td>
+                <td>
+                    <form th:action="@{/genres/delete}" method="POST">
+                        <input type="hidden" name="_method" value="delete">
+                        <input type="hidden" name="genre_id" th:value="${genre.id}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </details>
+
+    <form th:action="@{/countries/new}" method="POST">
+        <label for="short_name">Short name:</label>
+        <input type="text" name="short_name" id="short_name">
+        <br>
+        <label for="full_name">Full name:</label>
+        <input type="text" name="full_name" id="full_name">
+        <br>
+        <button type="submit">Create new country</button>
+    </form>
+
+    <details>
+        <summary>Countries</summary>
+        <table>
+            <thead>
+            <tr>
+                <td>#</td>
+                <td>Short name</td>
+                <td>Full name</td>
+                <td>Delete</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="country : ${countries}">
+                <td th:text="${country.id}"></td>
+                <td th:text="${country.shortName}"></td>
+                <td th:text="${country.fullName}"></td>
+                <td>
+                    <form th:action="@{/countries/delete}" method="POST">
+                        <input type="hidden" name="_method" value="delete">
+                        <input type="hidden" name="country_id" th:value="${country.id}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </details>
+
 </body>
 </html>

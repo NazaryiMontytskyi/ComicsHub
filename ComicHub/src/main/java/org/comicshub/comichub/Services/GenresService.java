@@ -31,4 +31,8 @@ public class GenresService {
         return genresRepository.findById(id);
     }
 
+    public Genre deleteById(long id){
+        return this.genresRepository.deleteById(id);
+    }
+
 }
