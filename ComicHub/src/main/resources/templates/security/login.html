@@ -3,19 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>ComicHUB | LOGIN</title>
+    <link rel="stylesheet" href="/styles/login.css">
 </head>
 <body>
-    <h1>Authorization</h1>
-    <form action="/login" method="POST">
-        <label for="username">Username: </label>
-        <input type="text" id="username" name="username">
-        <br>
-        <label for="password">Password: </label>
-        <input type="password" id="password" name="password">
-        <br>
-        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-        <input type="submit" value="Enter">
+<div class="login-container">
+    <!-- Кнопка переходу на головну сторінку -->
+    <div class="navigation-buttons">
+        <a th:href="@{/comics/index}" class="home-button">Home</a>
+    </div>
 
-    </form>
+    <!-- Форма логіну -->
+    <div class="login-form-container">
+        <h1>Authorization</h1>
+        <form action="/login" method="POST" class="login-form">
+            <label for="username">Username: </label>
+            <input type="text" id="username" name="username" class="form-input">
+            <br>
+            <label for="password">Password: </label>
+            <input type="password" id="password" name="password" class="form-input">
+            <br>
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+            <input type="submit" value="Enter" class="submit-button">
+        </form>
+
+        <!-- Кнопка для переходу на сторінку реєстрації -->
+        <div class="register-container">
+            <p>Not registered yet?</p>
+            <a th:href="@{/registration}" class="register-button">Register</a>
+        </div>
+    </div>
+</div>
 </body>
 </html>

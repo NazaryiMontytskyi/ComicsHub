@@ -46,7 +46,7 @@ public class UserService {
 
     public User getUserByPrincipal(Principal principal) {
         if(principal == null) {
-            return new User();
+            return null;
         }
         return this.userRepository.findByUsername(principal.getName());
     }

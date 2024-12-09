@@ -1,0 +1,112 @@
+/* Основні стилі */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #7b4397, #dc2430);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Контейнер сторінки */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+}
+
+/* Кнопка на головну сторінку */
+.navigation-buttons {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.home-button {
+    background-color: #fff;
+    color: #dc2430;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.home-button:hover {
+    background-color: #dc2430;
+    color: #fff;
+}
+
+/* Форма логіну */
+.login-form-container {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 30px 20px; /* Внутрішні відступи */
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px; /* Максимальна ширина */
+    box-sizing: border-box; /* Враховує padding */
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    text-align: left;
+}
+
+.form-input {
+    width: calc(100% - 20px); /* Враховує padding контейнера */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #000;
+    font-size: 14px;
+    box-sizing: border-box; /* Враховує padding і рамки */
+}
+
+.submit-button {
+    background-color: #dc2430;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #7b4397;
+}
+
+/* Блок реєстрації */
+.register-container {
+    margin-top: 15px;
+}
+
+.register-button {
+    background-color: #fff;
+    color: #7b4397;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.register-button:hover {
+    background-color: #7b4397;
+    color: #fff;
+}

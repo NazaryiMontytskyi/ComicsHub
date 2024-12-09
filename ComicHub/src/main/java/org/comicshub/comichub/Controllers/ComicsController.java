@@ -23,24 +23,27 @@ public class ComicsController {
     PdfService pdfService;
     ImageService imageService;
     ComicCommentsService comicCommentsService;
+    UserService userService;
 
     @Autowired
     public ComicsController(ComicsService comicsService, GenresService genresService, CountriesService countriesService,
                             PdfService pdfService, ImageService imageService,
-                            ComicCommentsService comicCommentsService) {
+                            ComicCommentsService comicCommentsService,
+                            UserService userService) {
         this.comicsService = comicsService;
         this.genresService = genresService;
         this.countriesService = countriesService;
         this.pdfService = pdfService;
         this.imageService = imageService;
         this.comicCommentsService = comicCommentsService;
+        this.userService = userService;
     }
 
     @GetMapping("/comics/index")
     public String index(@RequestParam(value = "genreId", required = false, defaultValue = "0") long genreId,
                         @RequestParam(value = "countryId", required = false, defaultValue = "0") long countryId,
                         @RequestParam(value = "searchString", required = false, defaultValue = "") String searchQuery,
-                        @PageableDefault(size = 6) Pageable pageable,
+                        @PageableDefault(size = 3) Pageable pageable, Principal principal,
                         Model model){
         Genre genre = null;
         Country country = null;
@@ -60,6 +63,7 @@ public class ComicsController {
         model.addAttribute("genre", genre);
         model.addAttribute("country", country);
         model.addAttribute("comics", content);
+        model.addAttribute("user", this.userService.getUserByPrincipal(principal));
         return "comics/index";
     }
 
