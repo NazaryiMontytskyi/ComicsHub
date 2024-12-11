@@ -29,6 +29,9 @@ public class PdfService {
         return pdfFileRepository.findById(id);
     }
 
-
+    public PDFFile deleteById(long id)
+    {
+        return this.pdfFileRepository.deleteById(id);
+    }
 
 }

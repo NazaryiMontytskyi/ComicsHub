@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Comic</title>
+    <link rel="stylesheet" href="/styles/comic-edit.css">
+</head>
+<body>
+
+<header>
+    <div class="header-logo">
+        <a th:href="@{/comics/index}">ComicHub</a>
+    </div>
+    <nav class="header-navigation">
+        <a th:href="@{/comics/index}" class="nav-link">Comics</a>
+        <a href="/comics/new" class="nav-link">New Comic</a>
+        <a href="/favourites" class="nav-link">Favourites</a>
+        <a th:if="${isAdmin}" href="/admin/index" class="nav-link">Admin Panel</a>
+    </nav>
+    <div class="header-user">
+        <span th:if="${user == null}">
+            <a href="/login">Login</a>
+        </span>
+        <span th:if="${user != null}">
+            <a th:href="@{/my_account}" th:text="${user.username}"></a>
+        </span>
+    </div>
+</header>
+
+<div class="container">
+    <!-- Left Column: Comic Image -->
+    <div class="comic-image">
+        <img th:src="@{/images/{id}(id=${comic.titleImage.id})}" alt="Comic Image">
+    </div>
+
+    <!-- Right Column: Edit Form -->
+    <div class="form-container">
+        <form th:action="@{/comics/edit}" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:value="${comic.id}" name="comic_id" />
+            <input type="hidden" name="_method" value="patch">
+
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" th:value="${comic.title}" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="desc" rows="5" th:text="${comic.description}" required></textarea>
+
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" th:value="${comic.author}" required>
+
+            <label for="genre">Genre:</label>
+            <select id="genre" name="genre_id" required>
+                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}" th:selected="${genre.id == comic.genre.id}"></option>
+            </select>
+
+            <label for="country">Country:</label>
+            <select id="country" name="country_id" required>
+                <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.fullName}" th:selected="${country.id == comic.country.id}"></option>
+            </select>
+
+            <label for="titleImage">Replace Title Image:</label>
+            <input type="file" id="titleImage" name="title-image" accept="image/*" class="file-input">
+
+            <label for="pdfFile">Replace PDF File:</label>
+            <input type="file" id="pdfFile" name="pdf-file" accept="application/pdf" class="file-input">
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

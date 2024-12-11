@@ -35,7 +35,7 @@ public class SecurityConfig{
                                         .requestMatchers("/styles/**").permitAll()
                                         .requestMatchers("/images/**").permitAll()
                                         .requestMatchers("/registration").permitAll()
-                                        .requestMatchers("/comics/index").permitAll()
+                                        .requestMatchers("/comics/**").permitAll()
                                         .requestMatchers("/viewPdf/**").permitAll()
                                         .requestMatchers("/my_account").hasAnyRole("USER", "ADMIN")
                                         .requestMatchers("/admin/**").hasRole("ADMIN")

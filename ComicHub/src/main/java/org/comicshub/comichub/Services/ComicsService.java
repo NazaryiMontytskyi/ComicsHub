@@ -88,6 +88,9 @@ public class ComicsService {
         return this.comicsRepository.deleteById(id);
     }
 
+    public Comic update(Comic comic){
+        return this.comicsRepository.save(comic);
+    }
 
 
 }

@@ -2,105 +2,131 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin panel</title>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/styles/admin.css">
 </head>
 <body>
-    <h1>Admin panel</h1>
-    <hr>
+<header>
+    <div class="header-container">
+        <!-- Логотип -->
+        <div class="header-logo">
+            <a th:href="@{/comics/index}" class="logo-link">ComicHub</a>
+        </div>
+
+        <!-- Посилання на інші сторінки -->
+        <nav class="header-navigation">
+            <a th:href="@{/comics/index}" class="nav-link">Comics</a>
+            <a href="/comics/new" class="nav-link">New Comic</a>
+            <a href="/favourites" class="nav-link">Favourites</a>
+            <a th:if="${isAdmin}" href="/admin/index" class="nav-link">Admin Panel</a>
+        </nav>
+
+        <!-- Інформація про користувача -->
+        <div class="header-user">
+            <span th:if="${user == null}">
+                <a href="/login" class="login-link">Login</a>
+            </span>
+            <span th:if="${user != null}">
+                <a th:href="@{/my_account}" class="user-link" th:text="${user.username}"></a>
+            </span>
+        </div>
+    </div>
+</header>
+
+<main>
     <details>
-        <summary>User of system</summary>
-        <table>
+        <summary>Users of system</summary>
+        <table class="styled-table">
             <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Active</th>
-                    <th>Activate/Deactivate</th>
-                    <th>Delete account</th>
-                </tr>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Active</th>
+                <th>Activate/Deactivate</th>
+                <th>Delete account</th>
+            </tr>
             </thead>
             <tbody>
-                <tr th:each="user : ${users}">
-                    <td th:text="${user.id}"></td>
-                    <td th:text="${user.username}"></td>
-                    <td th:text="${user.email}"></td>
-                    <div th:if="${user.active}">
-                        <td>Active</td>
-                        <td><form th:action="@{/admin/deactivate}" method="POST">
-                            <input type="hidden" name="user_id" th:value="${user.id}">
-                            <input type="hidden" name="_method" value="patch">
-                            <button type="submit">Deactivate</button>
-                        </form></td>
-                    </div>
-                    <div th:if="${!user.active}">
-                        <td>Not active</td>
-                        <td>
-                            <form th:action="@{/admin/activate}"  method="POST">
-                                <input type="hidden" name="user_id" th:value="${user.id}">
-                                <input type="hidden" name="_method" value="patch">
-                                <button type="submit">Activate</button>
-                            </form>
-                        </td>
-                    </div>
-                    <td>
-                        <form th:action="@{/admin/delete}" method="POST">
-                            <input type="hidden" name="_method" value="delete">
-                            <input type="hidden" name="user_id" th:value="${user.id}">
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </details>
-    <details>
-        <summary>Comics in system</summary>
-        <table>
-            <thead>
-                <tr>
-                    <td>#</td>
-                    <td>Name</td>
-                    <td>Description</td>
-                    <td>Author</td>
-                    <td>Genre</td>
-                    <td>Country</td>
-                    <td>Delete comic</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="item : ${comics}">
-                    <td th:text="${item.id}"></td>
-                    <td th:text="${item.title}"></td>
-                    <td th:text="${item.description}"></td>
-                    <td th:text="${item.author}"></td>
-                    <td th:text="${item.genre.name}"></td>
-                    <td th:text="${item.country.shortName}"></td>
-                    <td>
-                        <form th:action="@{/admin/delete_comic}" method="POST">
-                            <input type="hidden" name="_method" value="delete">
-                            <input type="hidden" name="comic_id" th:value="${item.id}">
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.active ? 'Active' : 'Not active'}"></td>
+                <td>
+                    <form th:action="@{${user.active ? '/admin/deactivate' : '/admin/activate'}}" method="POST">
+                        <input type="hidden" name="user_id" th:value="${user.id}">
+                        <input type="hidden" name="_method" value="patch">
+                        <button class="btn btn-toggle" type="submit" th:text="${user.active ? 'Deactivate' : 'Activate'}"></button>
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/users/delete}" method="POST">
+                        <input type="hidden" name="_method" value="delete">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                        <input type="hidden" name="user_id" th:value="${user.id}">
+                        <button class="btn btn-delete" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
             </tbody>
         </table>
     </details>
 
-    <form th:action="@{/genres/new}" method="POST">
+    <details>
+        <summary>Comics in system</summary>
+        <table class="styled-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Country</th>
+                <th>Open</th>
+                <th>Delete comic</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${comics}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.title}"></td>
+                <td th:text="${item.description}"></td>
+                <td th:text="${item.author}"></td>
+                <td th:text="${item.genre.name}"></td>
+                <td th:text="${item.country.shortName}"></td>
+                <td>
+                    <form th:action="@{/comics/{id}(id=${item.id})}" method="GET">
+                        <button class="btn btn-open" type="submit">Open</button>
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/admin/delete_comic}" method="POST">
+                        <input type="hidden" name="_method" value="delete">
+                        <input type="hidden" name="comic_id" th:value="${item.id}">
+                        <button class="btn btn-delete" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </details>
+
+    <form th:action="@{/genres/new}" method="POST" class="create-form">
         <label for="name">Name of genre: </label>
         <input type="text" name="name" id="name">
         <br>
-        <label for="description">Description of genre</label>
+        <label for="description">Description of genre: </label>
         <input type="text" name="description" id="description">
         <br>
-        <button type="submit">Create genre</button>
+        <button class="btn btn-create" type="submit">Create genre</button>
     </form>
+
 
     <details>
         <summary>Genres</summary>
-        <table>
+        <table class="styled-table">
             <thead>
             <tr>
                 <td>#</td>
@@ -118,7 +144,7 @@
                     <form th:action="@{/genres/delete}" method="POST">
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="genre_id" th:value="${genre.id}">
-                        <button type="submit">Delete</button>
+                        <button class="btn btn-delete" type="submit">Delete</button>
                     </form>
                 </td>
             </tr>
@@ -126,19 +152,19 @@
         </table>
     </details>
 
-    <form th:action="@{/countries/new}" method="POST">
-        <label for="short_name">Short name:</label>
+    <form th:action="@{/countries/new}" method="POST" class="create-form">
+        <label for="short_name">Short name: </label>
         <input type="text" name="short_name" id="short_name">
         <br>
-        <label for="full_name">Full name:</label>
+        <label for="full_name">Full name: </label>
         <input type="text" name="full_name" id="full_name">
         <br>
-        <button type="submit">Create new country</button>
+        <button class="btn btn-create" type="submit">Create new country</button>
     </form>
 
     <details>
         <summary>Countries</summary>
-        <table>
+        <table class="styled-table">
             <thead>
             <tr>
                 <td>#</td>
@@ -156,7 +182,7 @@
                     <form th:action="@{/countries/delete}" method="POST">
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="country_id" th:value="${country.id}">
-                        <button type="submit">Delete</button>
+                        <button class="btn btn-delete" type="submit">Delete</button>
                     </form>
                 </td>
             </tr>
@@ -164,5 +190,6 @@
         </table>
     </details>
 
+</main>
 </body>
 </html>

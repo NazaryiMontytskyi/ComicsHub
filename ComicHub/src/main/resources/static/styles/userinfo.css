@@ -1,0 +1,204 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+/* Header */
+header {
+    background: linear-gradient(to right, #7b4397, #dc2430);
+    color: white;
+    padding: 10px 20px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+}
+
+.account-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* User Info */
+.user-info {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar-image {
+    border-radius: 50%;
+    height: 150px;
+    width: 150px;
+}
+
+/* Comic Blocks */
+.comic-block {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* Сітка: зображення, інформація, дії */
+    gap: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Більш виражена тінь */
+    margin-bottom: 20px; /* Відступ між коміксами */
+    align-items: center;
+}
+
+.comic-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px; /* Закруглені кути для зображення */
+    object-fit: cover; /* Пропорційне обрізання зображення */
+    max-height: 150px; /* Обмеження висоти */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тінь для зображення */
+}
+
+.comic-info {
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    color: #333333; /* Темно-сірий текст */
+    line-height: 1.6; /* Оптимальний інтервал між рядками */
+}
+
+.comic-info p {
+    margin: 5px 0; /* Невеликий відступ між абзацами */
+}
+
+.comic-info b {
+    color: #555555; /* Сірий колір для ключових слів */
+}
+
+.comic-actions {
+    display: flex;
+    flex-direction: column; /* Кнопки розташовані вертикально */
+    gap: 10px;
+    align-items: center;
+}
+
+.edit-button, .delete-button {
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out; /* Анімація при наведенні */
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+}
+
+.edit-button {
+    background-color: #FFD700; /* Яскравий жовтий */
+    color: #333333; /* Темний текст */
+}
+
+.edit-button:hover {
+    background-color: #FFC107; /* Темніший жовтий */
+    color: #000000;
+}
+
+.delete-button {
+    background-color: #FF4C4C; /* Червоний */
+    color: #ffffff; /* Білий текст */
+}
+
+.delete-button:hover {
+    background-color: #D32F2F; /* Темніший червоний */
+    color: #f5f5f5;
+}
+
+
+.form-section {
+    display: grid;
+    grid-template-columns: 1fr; /* Один стовпець */
+    gap: 20px; /* Проміжок між формами */
+    padding: 20px;
+    background-color: #f9f9f9; /* Світлий фон */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px; /* Обмеження ширини */
+    margin: 0 auto; /* Центрування на сторінці */
+}
+
+.form-section form {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Сітка для міток і полів */
+    gap: 10px; /* Проміжок між елементами */
+    align-items: center; /* Вертикальне вирівнювання */
+    background-color: #fff; /* Білий фон для форм */
+    padding: 15px;
+    border: 1px solid #ddd; /* Тонка сіра рамка */
+    border-radius: 8px; /* Закруглені кути */
+}
+
+.form-section form label {
+    font-weight: bold;
+    color: #333;
+}
+
+.form-section form input[type="text"],
+.form-section form input[type="file"],
+.form-section form input[type="password"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 85%; /* Заповнення простору */
+}
+
+.form-section form input[type="submit"] {
+    grid-column: span 2; /* Кнопка займає дві колонки */
+    background-color: #4CAF50; /* Зелений фон */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-section form input[type="submit"]:hover {
+    background-color: #45a049; /* Трохи темніший зелений при наведенні */
+}
+
+.form-section form input[type="file"] {
+    padding: 0; /* Прибирання внутрішнього відступу для input[type="file"] */
+    font-size: 14px;
+}
+
+.form-section form input[type="submit"]:nth-of-type(1) {
+    background-color: #007BFF; /* Синій фон */
+}
+
+.form-section form input[type="submit"]:nth-of-type(2) {
+    background-color: #FF9800; /* Помаранчевий фон */
+}
+
+.form-section form input[type="submit"]:nth-of-type(3) {
+    background-color: #FF5722; /* Червоний фон */
+}
+
+.form-section form input[type='submit'].delete-account-btn{
+    background-color: #d11212;
+}
+
+.form-section form input[type='submit'].delete-account-btn:hover{
+    background-color: #8f1616;
+}
+

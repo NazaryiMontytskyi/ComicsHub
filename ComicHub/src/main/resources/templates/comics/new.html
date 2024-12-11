@@ -1,40 +1,72 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create new comic</title>
+    <title>Create New Comic</title>
+    <link rel="stylesheet" href="/styles/comic-create.css">
 </head>
 <body>
-<form th:action="@{/comics/new}" method="POST" enctype="multipart/form-data">
-    <label for="name">Name: </label>
-    <input type="text" id="name" name="title">
-    <br>
-    <label for="description">Description</label>
-    <input type="textfield" id="description" name="desc">
-    <br>
-    <label for="genre">Genre: </label>
-    <select name="genre" id="genre">
-        <option value="" disabled selected>Select a genre</option>
-        <option th:each="item : ${genres}" th:value="${item.getId()}" th:text="${item.getName()}"></option>
-    </select>
-    <br>
-    <label for="author">Author: </label>
-    <input type="text" name="author" id="author">
-    <br>
-    <label for="country"></label>
-    <select name="country" id="country">
-        <option value="" disabled selected>Select a country</option>
-        <option th:each="item : ${countries}" th:value="${item.getId()}" th:text="${item.getFullName()}"></option>
-    </select>
-    <br>
-    <label for="title-image">Select a title image:</label>
-    <input type="file" name="title-image" id="title-image">
-    <br>
-    <label for="pdf-file">Select a file: </label>
-    <input type="file" name = "pdf-file" id="pdf-file">
-    <br>
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-    <input type="submit" value="Create">
-</form>
+<header>
+    <div class="header-container">
+        <div class="header-logo">
+            <a th:href="@{/comics/index}" class="logo-link">ComicHub</a>
+        </div>
+
+        <nav class="header-navigation">
+            <a th:href="@{/comics/index}" class="nav-link">Comics</a>
+            <a href="/comics/new" class="nav-link">New Comic</a>
+            <a href="/favourites" class="nav-link">Favourites</a>
+            <a th:if="${isAdmin}" href="/admin/index" class="nav-link">Admin Panel</a>
+        </nav>
+
+        <div class="header-user">
+            <span th:if="${user == null}">
+                <a href="/login" class="login-link">Login</a>
+            </span>
+            <span th:if="${user != null}">
+                <a th:href="@{/my_account}" class="user-link" th:text="${user.username}"></a>
+            </span>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="form-container">
+        <h1>Create New Comic</h1>
+        <form th:action="@{/comics/new}" method="POST" enctype="multipart/form-data">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="title" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="desc" rows="5" required></textarea>
+
+            <label for="genre">Genre:</label>
+            <select name="genre" id="genre" required>
+                <option value="" disabled selected>Select a genre</option>
+                <option th:each="item : ${genres}" th:value="${item.getId()}" th:text="${item.getName()}"></option>
+            </select>
+
+            <label for="author">Author:</label>
+            <input type="text" name="author" id="author" required>
+
+            <label for="country">Country:</label>
+            <select name="country" id="country" required>
+                <option value="" disabled selected>Select a country</option>
+                <option th:each="item : ${countries}" th:value="${item.getId()}" th:text="${item.getFullName()}"></option>
+            </select>
+
+            <label for="title-image">Select a title image:</label>
+            <input type="file" name="title-image" id="title-image" accept="image/*">
+
+            <label for="pdf-file">Select a PDF file:</label>
+            <input type="file" name="pdf-file" id="pdf-file" accept="application/pdf">
+
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+
+            <button type="submit">Create Comic</button>
+        </form>
+    </div>
+</div>
+
 </body>
 </html>

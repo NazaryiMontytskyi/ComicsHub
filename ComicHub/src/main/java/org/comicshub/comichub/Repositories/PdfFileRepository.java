@@ -15,4 +15,6 @@ public interface PdfFileRepository extends JpaRepository<PDFFile, Long> {
     PDFFile findById(long id);
 
     PDFFile save(PDFFile pdfFile);
+
+    PDFFile deleteById(long id);
 }

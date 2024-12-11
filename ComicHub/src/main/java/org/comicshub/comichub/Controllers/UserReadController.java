@@ -8,10 +8,7 @@ import org.comicshub.comichub.Services.UserReadService;
 import org.comicshub.comichub.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -45,7 +42,7 @@ public class UserReadController {
     }
 
     @DeleteMapping("/remove")
-    public String removeComicFromFavourites(@RequestParam("comicId") long comicId, Principal principal){
+    public String removeComicFromFavourites(@RequestParam("comic_id") long comicId, Principal principal){
         User user = this.userService.getUserByPrincipal(principal);
         Comic comic = this.comicsService.findById(comicId);
         this.userReadService.removeFromList(user, comic);

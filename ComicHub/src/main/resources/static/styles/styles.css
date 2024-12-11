@@ -7,6 +7,7 @@ body{
     display: grid;
     grid-template-rows: 10vh 5fr;
     min-height: 100vh;
+    background-color: #f4f4f4;
 }
 
 header {
@@ -85,9 +86,18 @@ header {
 }
 
 
-.content-container{
-    min-height: 5fr;
+.content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    margin-top: 20px; /* Відступ від хедера */
+    margin-bottom: 20px; /* Відступ від нижньої межі */
+    padding: 0 20px; /* Додатково можна додати внутрішні відступи з боків */
 }
+
 
 /* Загальний стиль контейнера для коміксів */
 .comics-container {
@@ -96,17 +106,33 @@ header {
     gap: 20px;
     justify-content: center;
     margin: 20px 0;
+    min-height: 400px; /* Встановлення мінімальної висоти */
+    align-items: center; /* Додає вертикальне вирівнювання у випадку порожнього контейнера */
 }
+.no-content-message {
+    font-size: 18px;
+    color: #555;
+    text-align: center;
+    margin-top: 50px;
+}
+
 
 /* Стиль окремого коміксу */
 .comic {
     border: 1px solid #ddd;
     border-radius: 8px;
     width: 300px; /* Ширина одного коміксу */
+    height: 400px; /* Фіксована висота для всіх коміксів */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     background-color: #fff;
+    display: flex; /* Використання Flexbox для вирівнювання вмісту */
+    flex-direction: column;
+    justify-content: space-between; /* Розподіл вмісту всередині контейнера */
+    text-align: center;
+    padding: 16px;
 }
+
 
 /* Контейнер вмісту коміксу */
 .comic-content-container {

@@ -68,4 +68,8 @@ public class UserService {
         return this.userRepository.existsByUsername(username);
     }
 
+    public User getAnyAdmin(){
+        return this.userRepository.findAllByRole(Role.ROLE_ADMIN).get(0);
+    }
+
 }

@@ -1,68 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:value="${user.username}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${user.username}"></title>
+    <link rel="stylesheet" href="/styles/userinfo.css">
+    <link rel="stylesheet" href="/styles/styles.css">
 </head>
 <body>
-<h2>My account</h2>
-<hr>
-<p><b>Username: </b><span th:text="${user.username}"></span></p>
-<form th:action="@{/username}" method="POST">
-    <input type="hidden" name="_method" value="patch">
-    <label for="username">New username</label>
-    <input type="text" name="username" id = "username">
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-    <input type="hidden" name="user_id" th:value="${user.getId()}">
-    <input type="submit" value="Change username">
-</form>
-<p><b>Email: </b><span th:text="${user.email}"></span></p>
-<form th:action="@{/email}" method="POST">
-    <input type="hidden" name="_method" value="patch">
-    <label for="email">New email: </label>
-    <input type="email" name = "email" id="email">
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-    <input type="hidden" name="user_id" th:value="${user.getId()}">
-    <input type="submit" value="Change email">
-</form>
-<p>Avatar:</p>
-<div th:if="${user.getAvatar()!=null}">
-    <img th:src="@{/images/{file_id}(file_id=${user.getAvatar().getId()})}" alt="No avatar" height="150px">
-</div>
-<div th:if="${!(user.getAvatar()!=null)}">
-    <p>No such avatar</p>
-</div>
-<form th:action="@{/avatar}" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="_method" value="patch">
-    <label for="avatar">Load new image for avatar: </label>
-    <input type="file" name="avatar" id="avatar">
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-    <input type="hidden" name="user_id" th:value="${user.getId()}">
-    <input type="submit" value="Change avatar">
-</form>
-<form th:action="@{/password}" method="POST">
-    <input type="hidden" name="_method" value="patch">
-    <label for="curr_pass">Current password:</label>
-    <input type="password" name="current_password" id="curr_pass">
-    <label for="new_pass">New password: </label>
-    <input type="password" name="new_password" id="new_pass">
-    <label for="conf_pass">Confirm new password</label>
-    <input type="password" name="confirm_password" id = "conf_pass">
-    <input type="hidden" name="user_id" th:value="${user.id}">
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-    <input type="submit" value="Change password">
-</form>
-<div th:if="${comics.isEmpty()}">
-  <p color="red">User hasn't any comics!</p>
-</div>
-<div th:if="${!comics.isEmpty()}">
-  <h3>User comics</h3>
-  <div th:each="comic : ${comics}">
-    <p><span th:text="${comic.getTitle()}"></span></p>
-    <p><span th:description="${comic.getDescription()}"></span></p>
-    <img th:src="@{/images/{fileId}(fileId=${comic.titleImage.id})}" alt="" height="150px">
-    <br>
-  </div>
-</div>
+<header>
+    <div class="header-container">
+        <!-- Логотип -->
+        <div class="header-logo">
+            <a th:href="@{/comics/index}" class="logo-link">ComicHub</a>
+        </div>
+
+        <!-- Посилання на інші сторінки -->
+        <nav class="header-navigation">
+            <a th:href="@{/comics/index}" class="nav-link">Comics</a>
+            <a href="/comics/new" class="nav-link">New Comic</a>
+            <a href="/favourites" class="nav-link">Favourites</a>
+            <a th:if="${isAdmin}" href="/admin/index" class="nav-link">Admin Panel</a>
+        </nav>
+
+        <!-- Інформація про користувача -->
+        <div class="header-user">
+            <span th:if="${user == null}">
+                <a href="/login" class="login-link">Login</a>
+            </span>
+            <span th:if="${user != null}">
+                <a th:href="@{/my_account}" class="user-link" th:text="${user.username}"></a>
+            </span>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="account-container">
+        <div class="user-info">
+            <!-- Перша колонка: аватар -->
+            <div class="avatar-column">
+                <div th:if="${user.avatar != null}">
+                    <img th:src="@{/images/{file_id}(file_id=${user.avatar.id})}" alt="Avatar" class="avatar-image">
+                </div>
+                <div th:if="${user.avatar == null}">
+                    <p>No avatar</p>
+                </div>
+            </div>
+            <!-- Друга колонка: інформація -->
+            <div class="info-column">
+                <p><b>Username:</b> <span th:text="${user.username}"></span></p>
+                <p><b>Email:</b> <span th:text="${user.email}"></span></p>
+                <p><b>Registration Date:</b> <span th:text="${user.creationTime}"></span></p>
+            </div>
+        </div>
+
+        <!-- Форми зміни даних -->
+        <div class="form-section">
+            <form th:action="@{/username}" method="POST">
+                <input type="hidden" name="_method" value="patch">
+                <label for="username">New username:</label>
+                <input type="text" name="username" id="username">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <input type="hidden" name="user_id" th:value="${user.id}">
+                <input type="submit" value="Change username">
+            </form>
+            <form th:action="@{/avatar}" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="_method" value="patch">
+                <label for="avatar">Load new avatar:</label>
+                <input type="file" name="avatar" id="avatar">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <input type="hidden" name="user_id" th:value="${user.id}">
+                <input type="submit" value="Change avatar">
+            </form>
+            <form th:action="@{/password}" method="POST">
+                <input type="hidden" name="_method" value="patch">
+                <label for="curr_pass">Current password:</label>
+                <input type="password" name="current_password" id="curr_pass">
+                <label for="new_pass">New password:</label>
+                <input type="password" name="new_password" id="new_pass">
+                <label for="conf_pass">Confirm new password:</label>
+                <input type="password" name="confirm_password" id="conf_pass">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <input type="hidden" name="user_id" th:value="${user.id}">
+                <input type="submit" value="Change password">
+            </form>
+            <form th:action="@{/user/remove}" method="POST">
+                <input type="hidden" name="_method" value="delete">
+                <input type="hidden" name="user_id" th:value="${user.id}">
+                <label for="delete_pass">Password</label>
+                <input type="password" name="password" id="delete_pass">
+                <label for="delete_conf_pass">Confirm password</label>
+                <input type="password" name="conf_password" id="delete_conf_pass">
+                <input type="submit" value="Delete account" class="delete-account-btn">
+            </form>
+        </div>
+
+        <!-- Список коміксів -->
+        <div class="comics-section">
+            <div th:each="comic : ${comics}" class="comic-block">
+                <div class="comic-image">
+                    <img th:src="@{/images/{fileId}(fileId=${comic.titleImage.id})}" alt="Comic Image">
+                </div>
+                <div class="comic-info">
+                    <p><b>Title:</b> <span th:text="${comic.title}"></span></p>
+                    <p><b>Description:</b> <span th:text="${comic.description}"></span></p>
+                    <p><b>Genre:</b> <span th:text="${comic.genre.name}"></span></p>
+                    <p><b>Country:</b> <span th:text="${comic.country.fullName}"></span></p>
+                    <p><b>Author:</b> <span th:text="${comic.author}"></span></p>
+                </div>
+                <div class="comic-actions">
+                    <form th:action="@{/comics/edit/{id}(id=${comic.id})}" method="GET">
+                        <input type="submit" value="Edit" class="edit-button">
+                    </form>
+                    <form th:action="@{/comics/delete/{id}(id=${comic.id})}" method="POST">
+                        <input type="hidden" name="_method" value="delete">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                        <input type="submit" value="Delete" class="delete-button">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 </body>
 </html>
