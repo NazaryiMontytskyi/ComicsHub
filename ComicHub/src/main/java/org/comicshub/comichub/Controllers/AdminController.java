@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,11 +38,14 @@ public class AdminController {
     }
 
     @GetMapping("/index")
-    public String index(Model model) {
+    public String index(Model model, Principal principal) {
+        boolean isAdmin = true;
         model.addAttribute("users", userService.findAllUsers());
         model.addAttribute("comics", comicsService.index());
         model.addAttribute("genres", genresService.findAll());
         model.addAttribute("countries", countriesService.findAll());
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("user", this.userService.getUserByPrincipal(principal));
         return "admin/index";
     }
 

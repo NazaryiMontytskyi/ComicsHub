@@ -2,6 +2,7 @@ package org.comicshub.comichub.Controllers;
 
 import org.comicshub.comichub.Models.Comic;
 import org.comicshub.comichub.Models.ImageContent;
+import org.comicshub.comichub.Security.Role;
 import org.comicshub.comichub.Security.User;
 import org.comicshub.comichub.Services.ComicsService;
 import org.comicshub.comichub.Services.UserReadService;
@@ -10,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -60,8 +58,14 @@ public class UsersController {
     @GetMapping("/my_account")
     public String myAccountPage(Model model, Principal principal){
         User user = this.userService.getUserByPrincipal(principal);
+        boolean isAdmin = false;
+        if(this.userService.getUserByPrincipal(principal) != null)
+        {
+            isAdmin = this.userService.getUserByPrincipal(principal).getRoles().contains(Role.ROLE_ADMIN);
+        }
         model.addAttribute("user", user);
         model.addAttribute("comics", this.comicsService.findByUserId(user.getId()));
+        model.addAttribute("isAdmin", isAdmin);
         return "user/user-info";
     }
 
@@ -116,10 +120,33 @@ public class UsersController {
 
     @GetMapping("/favourites")
     public String favouriteComics(Model model, Principal principal){
+        boolean isAdmin = false;
+        if(this.userService.getUserByPrincipal(principal) != null)
+        {
+            isAdmin = this.userService.getUserByPrincipal(principal).getRoles().contains(Role.ROLE_ADMIN);
+        }
         User userToRead = this.userService.getUserByPrincipal(principal);
         List<Comic> usersComics = this.comicsService.findUserFavourites(userToRead.getId());
         model.addAttribute("users_comics", usersComics);
+        model.addAttribute("user", this.userService.getUserByPrincipal(principal));
+        model.addAttribute("isAdmin", isAdmin);
         return "user/user-favourite";
+    }
+
+    @DeleteMapping("/users/delete")
+    public String removeAccount(@RequestParam("user_id") long userId, Principal principal){
+        User anyAdmin = this.userService.getAnyAdmin();
+        User userWhoDeletes = this.userService.getUserByPrincipal(principal);
+        List<Comic> userToDeleteComics = this.comicsService.findByUserId(userId);
+        for(Comic comic : userToDeleteComics){
+            comic.setUser(anyAdmin);
+            this.comicsService.update(comic);
+        }
+        this.userService.deleteUser(userId);
+        if(userWhoDeletes.getRoles().contains(Role.ROLE_ADMIN)){
+            return "redirect:/admin/index";
+        }
+        return "redirect:/comics/index";
     }
 
 }

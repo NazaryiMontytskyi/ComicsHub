@@ -7,10 +7,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.comicshub.comichub.Models.Comic;
+import org.comicshub.comichub.Models.ComicComment;
 import org.comicshub.comichub.Models.ImageContent;
+import org.comicshub.comichub.Models.UserRead;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.xml.stream.events.Comment;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -53,6 +56,12 @@ public class User implements UserDetails {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Comic> comics = new ArrayList<>();
+
+    @OneToMany(mappedBy = "authorOfComment", cascade = CascadeType.ALL)
+    private List<ComicComment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserRead> userReads = new ArrayList<>();
 
     @PrePersist
     private void init(){

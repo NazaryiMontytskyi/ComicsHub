@@ -1,23 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Favourite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favourite Comics</title>
+    <link rel="stylesheet" href="/styles/user-favorites.css">
 </head>
 <body>
-    <h3>Your favourite comics</h3>
-    <hr>
-    <div th:each="comic : ${users_comics}">
-        <p>Name: <span th:text="${comic.title}"></span></p>
-        <p>Author: <span th:text="${comic.author}"></span></p>
-        <p>Country: <span th:text="${comic.country.getFullName()}"></span></p>
-        <form th:action="@{/userread/remove}" method="POST">
-            <input type="hidden" name="_method" value="delete">
-            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-            <input type="hidden" name="comicId" th:value="${comic.id}">
-            <input type="submit" value="Delete from list">
-        </form>
-        <p>---------------------------</p>
+<!-- Шапка -->
+<header>
+    <div class="header-container">
+        <!-- Логотип -->
+        <div class="header-logo">
+            <a th:href="@{/comics/index}" class="logo-link">ComicHub</a>
+        </div>
+
+        <!-- Посилання на інші сторінки -->
+        <nav class="header-navigation">
+            <a th:href="@{/comics/index}" class="nav-link">Comics</a>
+            <a href="/comics/new" class="nav-link">New Comic</a>
+            <a href="/favourites" class="nav-link">Favourites</a>
+            <a th:if="${isAdmin}" href="/admin/index" class="nav-link">Admin Panel</a>
+        </nav>
+
+        <!-- Інформація про користувача -->
+        <div class="header-user">
+            <span th:if="${user == null}">
+                <a href="/login" class="login-link">Login</a>
+            </span>
+            <span th:if="${user != null}">
+                <a th:href="@{/my_account}" class="user-link" th:text="${user.username}"></a>
+            </span>
+        </div>
     </div>
+</header>
+
+<!-- Основний контейнер -->
+<main class="main-container">
+    <h1>Your Favourite Comics</h1>
+    <div class="comics-list">
+        <div th:each="comic : ${users_comics}" class="comic-block">
+            <!-- Перша колонка: зображення -->
+            <div class="comic-image">
+                <img th:src="@{/images/{id}(id=${comic.titleImage.id})}" alt="Comic Image">
+            </div>
+
+            <!-- Друга колонка: деталі -->
+            <div class="comic-details">
+                <h3 th:text="${comic.title}"></h3>
+                <p th:text="${comic.description}"></p>
+                <p>Genre: <span th:text="${comic.genre.name}"></span></p>
+                <p>Country: <span th:text="${comic.country.fullName}"></span></p>
+            </div>
+
+            <!-- Третя колонка: кнопка видалення -->
+            <div class="comic-actions">
+                <form th:action="@{/userread/remove}" method="POST">
+                    <input type="hidden" name="_method" value="delete">
+                    <input type="hidden" name="comic_id" th:value="${comic.id}">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <button class="remove-button" type="submit">
+                        Remove
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</main>
 </body>
 </html>
