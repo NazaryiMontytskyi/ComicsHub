@@ -1,0 +1,263 @@
+/* Загальні стилі для сторінки */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Стилізація header */
+header {
+    background-image: linear-gradient(to right, #7b4397, #dc2430);
+    color: #fff;
+    padding: 10px 20px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* Три сектора: перший і третій рівні, другий ширший */
+    align-items: center;
+}
+
+.header-container {
+    display: contents; /* Дозволяє поділити шапку на три секції */
+}
+
+/* Логотип */
+.header-logo {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.logo-link {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.logo-link:hover {
+    color: #ffcc00;
+}
+
+/* Навігація */
+.header-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.nav-link {
+    font-size: 18px;
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-link:hover {
+    background-color: #fff;
+    color: #dc2430;
+}
+
+/* Інформація про користувача */
+.header-user {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.login-link, .user-link {
+    font-size: 18px;
+    color: #fff;
+    text-decoration: none;
+    border: 1px solid #fff;
+    padding: 5px 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.login-link:hover, .user-link:hover {
+    background-color: #fff;
+    color: #dc2430;
+}
+
+/* Стилізація таблиць */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.styled-table thead tr {
+    background-color: #7b4397;
+    color: #fff;
+    text-align: center;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr:nth-child(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Кнопки */
+.btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-toggle {
+    background-color: #ffa500;
+    color: #fff;
+}
+
+.btn-toggle:hover {
+    background-color: #ffcc00;
+    color: #000;
+}
+
+.btn-delete {
+    background-color: #dc2430;
+    color: #fff;
+}
+
+.btn-delete:hover {
+    background-color: #ff4d4d;
+}
+
+/* Стилізація для елементів <details> */
+details {
+    background-color: #f4f4f9; /* Світлий фон для кожного розгорнутого блоку */
+    border: 2px solid #ddd; /* Легкий обвід навколо розгорнутого блоку */
+    border-radius: 8px; /* Закруглені кути для м'якшого вигляду */
+    margin-bottom: 20px; /* Відступи між блоками */
+    padding: 15px;
+    transition: all 0.3s ease; /* Плавні анімації при зміні стилів */
+}
+
+/* Стилізація для елементів <summary> */
+details summary {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333; /* Текст заголовка темно-сірого кольору */
+    cursor: pointer; /* Курсор у вигляді руки для інтеркативного елемента */
+    padding: 10px;
+    background-color: #e0e0e0; /* Фон заголовка */
+    border: 2px solid #ccc; /* Обвід для заголовка */
+    border-radius: 5px; /* Легке округлення кутів */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Зміна фону при наведені на summary */
+details summary:hover {
+    background-color: #d4d4d4; /* Зміна фону при наведенні */
+    color: #1d1d1d; /* Зміна кольору тексту при наведенні */
+}
+
+/* Стилізація для розгорнутого вмісту */
+details[open] {
+    background-color: #ffffff; /* Зміна фону при відкритті */
+    border-color: #bbb; /* Зміна кольору обводки при відкритті */
+}
+
+/* Вигляд для списків в середині <details> */
+details ul {
+    padding-left: 20px;
+}
+
+details li {
+    margin-bottom: 10px;
+}
+
+/* Додавання стрілки для вказівки на відкриття/закриття */
+details summary::before {
+    font-size: 1.2rem;
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+}
+
+/* Стилізація при відкритті - змінюється стрілка */
+details[open] summary::before {
+    transform: rotate(90deg); /* Поворот стрілки при відкритті */
+}
+
+/* Стилізація форм для жанрів та країн */
+.create-form {
+    background-color: #f4f4f4; /* Світлий фон для форм */
+    border-radius: 8px; /* Заокруглені кути */
+    padding: 20px;
+    max-width: 500px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Легкий ефект тіні */
+}
+
+/* Стилізація полів введення */
+.create-form input[type="text"] {
+    width: 85%; /* Заповнення доступного простору */
+    padding: 10px;
+    margin: 10px 0 20px 0; /* Простір між полями */
+    border: 1px solid #ccc; /* Тонка рамка */
+    border-radius: 5px; /* Заокруглені кути */
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+/* Стилізація при фокусі на полях введення */
+.create-form input[type="text"]:focus {
+    border-color: #7b4397; /* Зміна кольору рамки при фокусі */
+    outline: none; /* Прибирає стандартний обвід */
+}
+
+/* Стилізація кнопок у формах */
+.create-form .btn-create {
+    background-color: #7b4397; /* Головний фон кнопки */
+    color: #fff; /* Білий текст */
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; /* Курсор у вигляді руки */
+    width: 100%; /* Кнопка заповнює всю ширину */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Кнопка при наведенні */
+.create-form .btn-create:hover {
+    background-color: #dc2430; /* Зміна кольору фону при наведенні */
+    transform: scale(1.05); /* Легке збільшення кнопки */
+}
+
+/* Кнопка при натисканні */
+.create-form .btn-create:active {
+    transform: scale(1); /* Повернення до стандартного розміру при натисканні */
+}
+
+/* Заголовки та підписи до полів */
+.create-form label {
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
