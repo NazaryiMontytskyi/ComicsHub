@@ -10,6 +10,7 @@ import org.comicshub.comichub.Models.Comic;
 import org.comicshub.comichub.Models.ComicComment;
 import org.comicshub.comichub.Models.ImageContent;
 import org.comicshub.comichub.Models.UserRead;
+import org.comicshub.comichub.ValidationForms.UserForm;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -96,5 +97,11 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.active;
+    }
+
+    public void fromUserForm(UserForm userForm){
+        this.username = userForm.getUsername();
+        this.password = userForm.getPassword();
+        this.email = userForm.getEmail();
     }
 }

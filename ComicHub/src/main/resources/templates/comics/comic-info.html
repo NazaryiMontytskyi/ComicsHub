@@ -65,10 +65,6 @@
         <p><strong>User:</strong> <span th:text="${comment.getAuthorOfComment().username}"></span></p>
         <p th:text="${comment.getContent()}"></p>
 
-        <!-- Кнопка для редагування коментаря (якщо користувач є автором) -->
-        <div th:if="${user != null and user.username == comment.getAuthorOfComment().username}">
-            <a th:href="@{/comments/{id}/edit(id=${comment.getId()})}" class="edit-link">Edit</a>
-        </div>
     </div>
 </div>
 

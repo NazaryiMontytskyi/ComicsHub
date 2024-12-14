@@ -91,3 +91,25 @@ body {
 .login-link a:hover {
     text-decoration: underline;
 }
+
+/* Стилі для повідомлень про помилки */
+.error-message {
+    color: #f44336; /* Червоний колір для повідомлень про помилки */
+    font-size: 11px;
+    margin: -10px 0 10px; /* Мінімізує відступ між полем вводу та помилкою */
+    text-align: left;
+}
+
+/* Анімація для появи помилки */
+.error-message.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

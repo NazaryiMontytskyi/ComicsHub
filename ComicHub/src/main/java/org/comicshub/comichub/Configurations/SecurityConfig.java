@@ -17,10 +17,14 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig{
 
     private final CustomUserDetailsService userDetailsService;
+    private final CustomAuthenticationFailureHandler failureHandler;
 
     @Autowired
-    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+    public SecurityConfig(CustomUserDetailsService userDetailsService,
+                          CustomAuthenticationFailureHandler handler) {
         this.userDetailsService = userDetailsService;
+        this.failureHandler = handler;
+
     }
 
     @Bean
@@ -33,8 +37,9 @@ public class SecurityConfig{
                         authorize ->
                                 authorize
                                         .requestMatchers("/styles/**").permitAll()
+                                        .requestMatchers("/security/**").permitAll()
                                         .requestMatchers("/images/**").permitAll()
-                                        .requestMatchers("/registration").permitAll()
+                                        .requestMatchers("/registration", "/registration/**").permitAll()
                                         .requestMatchers("/comics/**").permitAll()
                                         .requestMatchers("/viewPdf/**").permitAll()
                                         .requestMatchers("/my_account").hasAnyRole("USER", "ADMIN")
@@ -44,12 +49,19 @@ public class SecurityConfig{
                 .formLogin(
                         form ->
                                 form.loginPage("/login")
+                                        .failureHandler(failureHandler)
                                         .defaultSuccessUrl("/comics/index", true)
+                                        .failureUrl("/login?error=true")
                                         .permitAll()
                 )
                 .logout(
-                        logout ->
-                                logout.permitAll()
+                        logout -> logout
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/login?logout=true")
+                                .invalidateHttpSession(true) // Видаляє сесію
+                                .clearAuthentication(true) // Скасовує аутентифікацію
+                                .deleteCookies("JSESSIONID") // Видаляє cookies
+                                .permitAll()
                 );
 
         return http.build();

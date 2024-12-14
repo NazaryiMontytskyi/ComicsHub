@@ -15,6 +15,12 @@
     <!-- Форма логіну -->
     <div class="login-form-container">
         <h1>Authorization</h1>
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}"></p>
+        </div>
+        <div th:if="${logoutMessage}" class="logout-message">
+            <p th:text="${logoutMessage}"></p>
+        </div>
         <form action="/login" method="POST" class="login-form">
             <label for="username">Username: </label>
             <input type="text" id="username" name="username" class="form-input">
