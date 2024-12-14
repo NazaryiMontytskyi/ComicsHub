@@ -16,24 +16,17 @@ header {
 }
 
 .account-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
+    display: flex; /* Використовуємо flexbox */
+    flex-direction: column; /* Всі елементи розташовані вертикально */
+    align-items: center; /* Центруємо всі елементи по вертикалі */
+    gap: 20px; /* Проміжок між елементами */
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
 /* User Info */
-.user-info {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 20px;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+
 
 .avatar-column {
     display: flex;
@@ -45,6 +38,20 @@ header {
     border-radius: 50%;
     height: 150px;
     width: 150px;
+    object-fit: cover;
+    border: 2px solid #ccc;
+}
+
+.comics-section {
+    display: grid;
+    grid-template-columns: 1fr; /* Один стовпець */
+    gap: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
 }
 
 /* Comic Blocks */
@@ -67,6 +74,23 @@ header {
     object-fit: cover; /* Пропорційне обрізання зображення */
     max-height: 150px; /* Обмеження висоти */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тінь для зображення */
+}
+
+.info-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+.info-column p {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.info-column b {
+    color: #555;
 }
 
 .comic-info {
@@ -122,6 +146,50 @@ header {
     color: #f5f5f5;
 }
 
+.logout-column {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start; /* Вирівнювання зверху */
+}
+
+.logout-button {
+    background-color: #FF5722;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+}
+
+.logout-button:hover {
+    background-color: #D32F2F;
+}
+
+.user-info, .form-section {
+    flex: 1 1 45%; /* Контролюємо ширину: 45% від контейнера */
+    max-width: 600px; /* Обмеження максимальної ширини */
+    min-width: 300px; /* Мінімальна ширина, щоб виглядало коректно */
+    background: white; /* Білий фон */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легка тінь */
+}
+
+.user-info {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* Аватар, інформація, кнопка */
+    gap: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+}
 
 .form-section {
     display: grid;
@@ -132,7 +200,7 @@ header {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 600px; /* Обмеження ширини */
-    margin: 0 auto; /* Центрування на сторінці */
+    width: 100%;
 }
 
 .form-section form {
@@ -181,6 +249,8 @@ header {
     padding: 0; /* Прибирання внутрішнього відступу для input[type="file"] */
     font-size: 14px;
 }
+
+
 
 .form-section form input[type="submit"]:nth-of-type(1) {
     background-color: #007BFF; /* Синій фон */

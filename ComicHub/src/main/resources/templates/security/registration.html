@@ -12,15 +12,20 @@
       <h3>Registration</h3>
       <a th:href="@{/comics/index}" class="home-button">Home</a>
     </div>
-    <form action="/registration" method="POST" enctype="multipart/form-data">
+    <form action="/registration" th:object="${user}" method="POST" enctype="multipart/form-data">
       <label for="username">Username:</label>
-      <input type="text" id="username" name="username" class="form-input" required>
+      <input type="text" th:field="*{username}" id="username" name="username" class="form-input" required>
+      <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-message"></p>
+      <p th:if="${user_exists}" class="error-message">The user's already exists in the system!</p>
 
       <label for="email">E-mail:</label>
-      <input type="email" id="email" name="email" class="form-input" required>
+      <input type="email" th:field="*{email}" id="email" name="email" class="form-input" required>
+      <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></p>
 
       <label for="password">Password:</label>
-      <input type="password" id="password" name="password" class="form-input" required>
+      <input type="password" th:field="*{password}" id="password" name="password" class="form-input" required>
+      <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"></p>
+      <p th:if="${!password_valid}" class="error-message">The passwords doesn't match!</p>
 
       <label for="confirm_password">Confirm Password:</label>
       <input type="password" id="confirm_password" name="confirm_password" class="form-input" required>

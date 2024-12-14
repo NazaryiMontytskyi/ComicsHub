@@ -52,6 +52,15 @@
                 <p><b>Email:</b> <span th:text="${user.email}"></span></p>
                 <p><b>Registration Date:</b> <span th:text="${user.creationTime}"></span></p>
             </div>
+
+            <!-- Кнопка Logout -->
+            <div class="logout-column">
+                <form th:action="@{/logout}" method="POST">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input type="submit" value="Logout" class="logout-button">
+                </form>
+            </div>
+
         </div>
 
         <!-- Форми зміни даних -->
@@ -96,7 +105,7 @@
         </div>
 
         <!-- Список коміксів -->
-        <div class="comics-section">
+        <div class="comics-section" th:if="${!comics.isEmpty()}">
             <div th:each="comic : ${comics}" class="comic-block">
                 <div class="comic-image">
                     <img th:src="@{/images/{fileId}(fileId=${comic.titleImage.id})}" alt="Comic Image">

@@ -1,6 +1,7 @@
 package org.comicshub.comichub.Services;
 
 
+import jakarta.annotation.security.PermitAll;
 import lombok.extern.slf4j.Slf4j;
 import org.comicshub.comichub.Repositories.UserRepository;
 import org.comicshub.comichub.Security.Role;
@@ -23,6 +24,10 @@ public class UserService {
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public User findByUsername(String username){
+        return this.userRepository.findByUsername(username);
     }
 
     public User findById(long id){

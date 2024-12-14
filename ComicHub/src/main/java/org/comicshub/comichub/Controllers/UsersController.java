@@ -1,5 +1,6 @@
 package org.comicshub.comichub.Controllers;
 
+import jakarta.validation.Valid;
 import org.comicshub.comichub.Models.Comic;
 import org.comicshub.comichub.Models.ImageContent;
 import org.comicshub.comichub.Security.Role;
@@ -7,10 +8,12 @@ import org.comicshub.comichub.Security.User;
 import org.comicshub.comichub.Services.ComicsService;
 import org.comicshub.comichub.Services.UserReadService;
 import org.comicshub.comichub.Services.UserService;
+import org.comicshub.comichub.ValidationForms.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,20 +38,54 @@ public class UsersController {
     }
 
     @GetMapping("/registration")
-    public String registration(){
+    public String registration(Model model){
+        model.addAttribute("user", new UserForm());
+        model.addAttribute("password_valid", true);
+        model.addAttribute("user_exists", false);
         return "security/registration";
     }
 
+    @PostMapping("/registration")
+    public String createUser(@Valid @ModelAttribute("user") UserForm userForm,
+                             BindingResult bindingResult,
+                             @RequestParam("confirm_password") String confirmPassword,
+                             Model model) throws IOException {
+
+        boolean isPasswordValid = true;
+        boolean isUserExists = false;
+        model.addAttribute("user_exists", isUserExists);
+        model.addAttribute("password_valid", isPasswordValid);
+
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("password_valid", isPasswordValid);
+            return "/security/registration";
+        }
+
+        User user = new User();
+        user.fromUserForm(userForm);
+        if(!this.userService.createUser(user))
+        {
+            isUserExists = true;
+            model.addAttribute("user_exists", isUserExists);
+            return "/security/registration";
+        }
+        return "redirect:/login";
+    }
+
     @GetMapping("/login")
-    public String login(){
+    public String login(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "logout", required = false) String logout,
+                        Model model) {
+        if (error != null) {
+            model.addAttribute("errorMessage", "Invalid username or password!");
+        }
+        if (logout != null) {
+            model.addAttribute("logoutMessage", "You have been logged out successfully.");
+        }
         return "security/login";
     }
 
-    @PostMapping("/registration")
-    public String createUser(User user) throws IOException {
-        this.userService.createUser(user);
-        return "redirect:/login";
-    }
 
     @GetMapping("/hello")
     public String hello(){
