@@ -1,10 +1,13 @@
 package org.comicshub.comichub.Controllers;
 
+import jakarta.validation.Valid;
 import org.comicshub.comichub.Models.Country;
 import org.comicshub.comichub.Services.CountriesService;
+import org.comicshub.comichub.ValidationForms.CountryForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -33,12 +36,18 @@ public class CountriesController {
 
     @PostMapping("/new")
     public String postCountry(
-            @RequestParam("short_name") String shortName,
-            @RequestParam("full_name") String fullName
-    ){
+            @ModelAttribute("country") @Valid CountryForm countryForm,
+            BindingResult bindingResult,
+            Model model
+            ){
+
+        if(bindingResult.hasErrors()) {
+            return "redirect:/admin/index";
+        }
+
         Country newCountry = new Country();
-        newCountry.setShortName(shortName);
-        newCountry.setFullName(fullName);
+        newCountry.setShortName(countryForm.getShortName());
+        newCountry.setFullName(countryForm.getLongName());
         this.countriesService.save(newCountry);
         return "redirect:/admin/index";
     }

@@ -6,6 +6,8 @@ import org.comicshub.comichub.Services.ComicsService;
 import org.comicshub.comichub.Services.CountriesService;
 import org.comicshub.comichub.Services.GenresService;
 import org.comicshub.comichub.Services.UserService;
+import org.comicshub.comichub.ValidationForms.CountryForm;
+import org.comicshub.comichub.ValidationForms.GenreForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +48,8 @@ public class AdminController {
         model.addAttribute("countries", countriesService.findAll());
         model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("user", this.userService.getUserByPrincipal(principal));
+        model.addAttribute("country", new CountryForm());
+        model.addAttribute("genre", new GenreForm());
         return "admin/index";
     }
 

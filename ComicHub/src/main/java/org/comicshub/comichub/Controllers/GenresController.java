@@ -1,11 +1,14 @@
 package org.comicshub.comichub.Controllers;
 
 
+import jakarta.validation.Valid;
 import org.comicshub.comichub.Models.Genre;
 import org.comicshub.comichub.Services.GenresService;
+import org.comicshub.comichub.ValidationForms.GenreForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -33,12 +36,18 @@ public class GenresController {
 
     @PostMapping("/new")
     public String postGenre(
-            @RequestParam("name") String name,
-            @RequestParam("description") String description
-    ){
+            @ModelAttribute("genre") @Valid GenreForm genreForm,
+            BindingResult bindingResult,
+            Model model
+            ){
+
+        if(bindingResult.hasErrors()){
+            return "redirect:/admin/index";
+        }
+
         Genre newGenre = new Genre();
-        newGenre.setName(name);
-        newGenre.setDescription(description);
+        newGenre.setName(genreForm.getName());
+        newGenre.setDescription(genreForm.getDescription());
         genresService.save(newGenre);
         return "redirect:/admin/index";
     }

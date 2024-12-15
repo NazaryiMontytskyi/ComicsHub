@@ -113,12 +113,13 @@
         </table>
     </details>
 
-    <form th:action="@{/genres/new}" method="POST" class="create-form">
+    <form th:action="@{/genres/new}" th:object="${genre}" method="POST" class="create-form">
         <label for="name">Name of genre: </label>
-        <input type="text" name="name" id="name">
+        <input type="text" th:field="*{name}" name="name" id="name">
+        <p class = "error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
         <br>
         <label for="description">Description of genre: </label>
-        <input type="text" name="description" id="description">
+        <input type="text" th:field="*{description}" name="description" id="description">
         <br>
         <button class="btn btn-create" type="submit">Create genre</button>
     </form>
@@ -152,12 +153,14 @@
         </table>
     </details>
 
-    <form th:action="@{/countries/new}" method="POST" class="create-form">
+    <form th:action="@{/countries/new}" th:object="${country}" method="POST" class="create-form">
         <label for="short_name">Short name: </label>
-        <input type="text" name="short_name" id="short_name">
+        <input type="text" th:field="*{shortName}" name="short_name" id="short_name">
+        <p class="error-message" th:if="${#fields.hasErrors('shortName')}" th:errors="*{shortName}"></p>
         <br>
         <label for="full_name">Full name: </label>
-        <input type="text" name="full_name" id="full_name">
+        <input type="text" name="full_name" th:field="*{longName}" id="full_name">
+        <p class="error-message" th:if="${#fields.hasErrors('longName')}" th:errors="*{longName}"></p>
         <br>
         <button class="btn btn-create" type="submit">Create new country</button>
     </form>

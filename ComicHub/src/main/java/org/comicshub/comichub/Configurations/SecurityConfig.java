@@ -36,6 +36,7 @@ public class SecurityConfig{
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize
+
                                         .requestMatchers("/styles/**").permitAll()
                                         .requestMatchers("/security/**").permitAll()
                                         .requestMatchers("/images/**").permitAll()
@@ -44,6 +45,7 @@ public class SecurityConfig{
                                         .requestMatchers("/viewPdf/**").permitAll()
                                         .requestMatchers("/my_account").hasAnyRole("USER", "ADMIN")
                                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                                        .requestMatchers("/**").hasRole("ADMIN")
                                         .anyRequest().authenticated()
                 )
                 .formLogin(
