@@ -33,33 +33,40 @@
 <div class="container">
     <div class="form-container">
         <h1>Create New Comic</h1>
-        <form th:action="@{/comics/new}" method="POST" enctype="multipart/form-data">
+        <form th:action="@{/comics/new}" th:object="${comic}" method="POST" enctype="multipart/form-data">
             <label for="name">Name:</label>
-            <input type="text" id="name" name="title" required>
+            <input type="text" th:field="*{title}" id="name" name="title" required>
+            <p class="error-message" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
 
             <label for="description">Description:</label>
-            <textarea id="description" name="desc" rows="5" required></textarea>
+            <textarea id="description" name="desc" rows="5" th:field="*{description}" required></textarea>
+            <p class="error-message" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
 
             <label for="genre">Genre:</label>
             <select name="genre" id="genre" required>
                 <option value="" disabled selected>Select a genre</option>
                 <option th:each="item : ${genres}" th:value="${item.getId()}" th:text="${item.getName()}"></option>
             </select>
+            <p class="error-message" th:if="${!genre_correct}">The genre isn't selected!</p>
 
             <label for="author">Author:</label>
-            <input type="text" name="author" id="author" required>
+            <input type="text" th:field="*{author}" name="author" id="author" required>
+            <p class="error-message" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></p>
 
             <label for="country">Country:</label>
             <select name="country" id="country" required>
                 <option value="" disabled selected>Select a country</option>
                 <option th:each="item : ${countries}" th:value="${item.getId()}" th:text="${item.getFullName()}"></option>
             </select>
+            <p class="error-message" th:if="${!country_correct}">The country isn't selected!</p>
 
             <label for="title-image">Select a title image:</label>
             <input type="file" name="title-image" id="title-image" accept="image/*">
+            <p class="error-message" th:if="${!image_correct}">The file isn't supported!</p>
 
             <label for="pdf-file">Select a PDF file:</label>
             <input type="file" name="pdf-file" id="pdf-file" accept="application/pdf">
+            <p class="error-message" th:if="${!pdf_correct}">The file isn't supported</p>
 
             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
 

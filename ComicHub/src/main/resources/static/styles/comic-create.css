@@ -142,3 +142,13 @@ button {
 button:hover {
     background-image: linear-gradient(to right, #dc2430, #7b4397);
 }
+
+.error-message {
+    color: #e74c3c; /* Червоний колір для тексту */
+    font-size: 14px; /* Зменшений розмір шрифту */
+    font-weight: bold; /* Жирний шрифт */
+    margin-top: 5px; /* Відступ зверху для відділення від поля */
+    margin-left: 5px; /* Невеликий відступ зліва */
+    display: block; /* Забезпечує перенесення тексту на новий рядок */
+}
+

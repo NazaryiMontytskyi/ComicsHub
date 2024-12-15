@@ -70,9 +70,9 @@
 
 <hr>
 <p class="section-title">Leave a comment</p>
-<form th:action="@{/comments/}" method="POST" class="comment-form">
+<form th:action="@{/comments/}" th:object="${comment}" method="POST" class="comment-form">
     <label for="content" class="comment-label">Write a comment:</label>
-    <textarea name="content" id="content" required class="comment-input" placeholder="Your comment here..."></textarea>
+    <textarea th:field="*{comment}" name="content" id="content" required class="comment-input" placeholder="Your comment here..."></textarea>
     <input type="hidden" name="comic_id" th:value="${comic.getId()}">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
     <input type="submit" value="Post Comment" class="submit-button">

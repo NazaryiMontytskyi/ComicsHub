@@ -1,8 +1,11 @@
 package org.comicshub.comichub.Controllers;
 
+import jakarta.validation.Valid;
 import org.comicshub.comichub.Models.*;
 import org.comicshub.comichub.Security.Role;
 import org.comicshub.comichub.Services.*;
+import org.comicshub.comichub.ValidationForms.ComicForm;
+import org.comicshub.comichub.ValidationForms.CommentForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.Page;
@@ -11,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -92,6 +96,11 @@ public class ComicsController {
         model.addAttribute("username", principal.getName());
         model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("user", this.userService.getUserByPrincipal(principal));
+        model.addAttribute("comic", new ComicForm());
+        model.addAttribute("pdf_correct", true);
+        model.addAttribute("country_correct", true);
+        model.addAttribute("genre_correct", true);
+        model.addAttribute("image_correct", true);
 
 
         return "comics/new";
@@ -166,10 +175,10 @@ public class ComicsController {
 
     @PostMapping("/comics/new")
     public String postComic(
-            @RequestParam("title") String title,
-            @RequestParam("desc") String desc,
+            @ModelAttribute("comic") @Valid ComicForm comicForm,
+            BindingResult bindingResult,
+            Model model,
             @RequestParam("genre") long genreId,
-            @RequestParam("author") String author,
             @RequestParam("country") long countryId,
             @RequestParam("pdf-file") MultipartFile pdfFile,
             @RequestParam("title-image") MultipartFile titleImage,
@@ -184,14 +193,28 @@ public class ComicsController {
         ImageContent imageContent = new ImageContent();
         imageContent.fromMultipartFile(titleImage);
 
+        boolean isPdfFileCorrect = comicForm.isPdfFileCorrect(pdfFile);
+        boolean isImageFileCorrect = comicForm.isImageCorrect(titleImage);
+        boolean isGenreCorrect = genreId != 0;
+        boolean isCountryCorrect = countryId != 0;
+
+        model.addAttribute("pdf_correct", isPdfFileCorrect);
+        model.addAttribute("country_correct", isCountryCorrect);
+        model.addAttribute("genre_correct", isGenreCorrect);
+        model.addAttribute("image_correct", isImageFileCorrect);
+
+        if(bindingResult.hasErrors()){
+            return "/comics/new";
+        }
+
         this.pdfService.save(targetFile);
         this.imageService.save(imageContent);
 
         Comic comic = new Comic();
-        comic.setTitle(title);
-        comic.setDescription(desc);
+        comic.setTitle(comicForm.getTitle());
+        comic.setDescription(comicForm.getDescription());
         comic.setGenre(targetGenre);
-        comic.setAuthor(author);
+        comic.setAuthor(comicForm.getAuthor());
         comic.setCountry(targetCountry);
         comic.setPdfFile(targetFile);
         comic.setTitleImage(imageContent);
@@ -210,6 +233,7 @@ public class ComicsController {
         model.addAttribute("comments", this.comicCommentsService.findByComicId(id));
         model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("user", this.userService.getUserByPrincipal(principal));
+        model.addAttribute("comment", new CommentForm());
 
         return "comics/comic-info";
     }
