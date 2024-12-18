@@ -93,7 +93,7 @@
                 <input type="hidden" name="user_id" th:value="${user.id}">
                 <input type="submit" value="Change password">
             </form>
-            <form th:action="@{/user/remove}" method="POST">
+            <form th:action="@{/users/delete}" method="POST">
                 <input type="hidden" name="_method" value="delete">
                 <input type="hidden" name="user_id" th:value="${user.id}">
                 <label for="delete_pass">Password</label>
